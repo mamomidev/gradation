@@ -14,4 +14,5 @@ public class UserDto {
     private String phone;
     private String address;
     private UserAuthEnum author;
+    private String jenkins;
 }
