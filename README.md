@@ -1,2 +1,2 @@
 ## Gradation
-github action test
+GIHUB action test
