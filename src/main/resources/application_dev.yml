@@ -4,9 +4,9 @@ jwt:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/hh99_gradation
-    username: root
-    password:
+    url: jdbc:mysql://localhost:3306/exam
+    username: mm
+    password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -32,6 +32,4 @@ cloud:
       auto: false
 
 server:
-  port: 8080
-
----
+  port: 80
