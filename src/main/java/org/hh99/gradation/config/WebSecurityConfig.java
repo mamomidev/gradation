@@ -58,6 +58,7 @@ public class WebSecurityConfig {
                 authorizeHttpRequests
                     .requestMatchers("/api/login").permitAll()
                     .requestMatchers("/api/join").permitAll()
+                    .requestMatchers("/health").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/goods/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/goods").hasAnyAuthority("AUTH_ADMIN")
                     .requestMatchers(HttpMethod.POST, "/api/upload").hasAnyAuthority("AUTH_ADMIN")
