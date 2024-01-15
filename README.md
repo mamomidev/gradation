@@ -1,2 +1,2 @@
 ## Gradation
-GITHUB action test
+GITHUB action start
