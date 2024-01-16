@@ -46,6 +46,10 @@ public class CardService {
 			.collect(Collectors.toList());
 	}
 
+	public CardDto getCard(Long cardId) {
+		return new CardDto(cardRepository.findById(cardId).orElseThrow(EntityNotFoundException::new));
+	}
+
 	public ResponseEntity<String> createCard(CardDto cardDto, MultipartFile file) throws IOException {
 		cardDto.setUsers(userRepository.findByEmail(jwtUtil.getUserEmail()));
 		// Board 체크?
