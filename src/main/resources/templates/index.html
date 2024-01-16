@@ -172,7 +172,6 @@
             },
             body: JSON.stringify(loginData) // 데이터를 JSON 문자열로 변환하여 전송
         })
-            .then(response => response.json()) // 서버로부터의 응답을 JSON으로 파싱
             .then(data => {
                 alert("로그인 되었습니다.")
                 window.location.reload();
@@ -191,6 +190,10 @@
         deleteCookie('Authorization');
         alert("로그아웃 되었습니다.")
         window.location.reload();
+    })
+
+    document.getElementById("signup-btn").addEventListener('click', function() {
+        location.href = "/api/toSignup"
     })
 </script>
 </html>
