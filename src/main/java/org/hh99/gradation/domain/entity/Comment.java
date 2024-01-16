@@ -18,11 +18,11 @@ public class Comment {
 
 	@ManyToOne
 	@JoinColumn(name = "card_id")
-	private Card card;
+	private Card cards;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	private User user;
+	private User users;
 
 	@Column
 	private String contents;

@@ -1,4 +1,7 @@
 package org.hh99.gradation.repository;
 
-public interface CardRepository {
+import org.hh99.gradation.domain.entity.Card;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CardRepository extends JpaRepository<Card, Long> {
 }
