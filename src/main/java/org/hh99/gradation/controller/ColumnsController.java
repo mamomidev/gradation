@@ -22,7 +22,7 @@ public class ColumnsController {
         columnsService.modifyColumns(columnsId, columnsDto);
     }
 
-    @PatchMapping("columns/{columnsId}")
+    @PatchMapping("/columns/{columnsId}/order")
     public void modifyColumnsOrder(@PathVariable Long columnsId, @RequestBody ColumnsDto columnsDto) {
         columnsService.modifyColumnsOrder(columnsId, columnsDto);
     }
