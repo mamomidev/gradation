@@ -40,6 +40,7 @@ public class CardDto {
 
     private LocalDate deadLine;
 
+    @Setter
     private String url;
 
     private String worker;
