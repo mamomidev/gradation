@@ -58,10 +58,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		Authentication authResult) throws IOException, ServletException {
 		log.info(LOGIN_SUCCESS_AND_JWT_TOKEN_CREATION_LOG);
 
+		Long id = ((UserDetailsImpl)authResult.getPrincipal()).getUser().getId();
 		String email = ((UserDetailsImpl)authResult.getPrincipal()).getUsername();
 		UserAuthEnum auth = ((UserDetailsImpl)authResult.getPrincipal()).getUser().getAuthor();
 
-		String token = jwtUtil.createToken(email, auth);
+		String token = jwtUtil.createToken(id, email, auth);
 		jwtUtil.addJwtToCookie(token, response);
 
 		response.getWriter().write(SuccessMessage.LOGIN_SUCCESS_MESSAGE.getSuccessMessage());

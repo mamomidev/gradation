@@ -52,12 +52,13 @@ public class JwtUtil {
         return key = Keys.hmacShaKeyFor(bytes);
     }
 
-    public String createToken(String email, UserAuthEnum auth) {
+    public String createToken(Long id, String email, UserAuthEnum auth) {
         Date date = new Date();
 
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(email)
+                        .claim("id", id)
                         .claim(AUTHORIZATION_KEY, auth)
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME))
                         .setIssuedAt(date)
