@@ -21,4 +21,5 @@ public class ColumnsController {
     public void modifyColumns(@PathVariable Long columnsId, @RequestBody ColumnsDto columnsDto) {
         columnsService.modifyColumns(columnsId, columnsDto);
     }
+
 }
