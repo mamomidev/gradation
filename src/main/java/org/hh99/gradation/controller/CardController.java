@@ -30,8 +30,8 @@ public class CardController {
 
 	@GetMapping("/cards/{cardId}")
 	public String cards(@PathVariable Long cardId, Model model){
-		model.addAttribute("test", "SI 싫어요");
 		CardDto cardDto = cardService.getCard(cardId);
+		model.addAttribute("test", "SI 싫어요");
 		model.addAttribute("card", cardDto);
 		return "card";
 	}
