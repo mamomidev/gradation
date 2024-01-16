@@ -1,32 +1,32 @@
 package org.hh99.gradation.domain.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Table
+@Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-public class Board {
+@AllArgsConstructor
+public class BoardUser {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column
-	private String boardName;
+	@ManyToOne
+	@JoinColumn
+	private User user;
 
-	@Column
-	private String boardOrder;
-
-	@Column
-	private String boardDescription;
+	@ManyToOne
+	@JoinColumn
+	private Board board;
 }
