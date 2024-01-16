@@ -63,7 +63,7 @@ public class WebSecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/api/goods").hasAnyAuthority("AUTH_ADMIN")
                     .requestMatchers(HttpMethod.POST, "/api/upload").hasAnyAuthority("AUTH_ADMIN")
                     .requestMatchers("/api/carts/**").hasAnyAuthority("AUTH_USER")
-                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
         );
 
         http.exceptionHandling((exceptionHandling) ->
