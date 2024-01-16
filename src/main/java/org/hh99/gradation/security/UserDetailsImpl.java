@@ -30,6 +30,8 @@ public class UserDetailsImpl implements UserDetails {
         return user.getEmail();
     }
 
+    public Long getUserId() {return user.getId(); }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         UserAuthEnum auth = user.getAuthor();
