@@ -1,10 +1,13 @@
 package org.hh99.gradation.service;
 
 import org.hh99.gradation.domain.dto.CardDto;
+import org.hh99.gradation.domain.entity.Card;
 import org.hh99.gradation.repository.CardRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -16,7 +19,25 @@ public class CardService {
 	//TODO 2024-01-16 14:18 생성
 	// 컬럼 내부에 카드 생성
 	public ResponseEntity createCard(CardDto cardDto) {
-		return null;
+
+		if (cardDto.getUsers() == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+
+		if (cardDto.getColumns() == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+
+		if (StringUtils.isBlank(cardDto.getCardName())) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+
+		if (cardDto.getCardOrder() == null) {
+			cardDto.setCardOrder(1);
+		}
+
+		cardRepository.save(new Card(cardDto));
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	//TODO 2024-01-16 14:18 수정
