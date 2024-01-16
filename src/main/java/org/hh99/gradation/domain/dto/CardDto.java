@@ -2,6 +2,7 @@ package org.hh99.gradation.domain.dto;
 
 import java.time.LocalDate;
 
+import org.hh99.gradation.domain.entity.Card;
 import org.hh99.gradation.domain.entity.Columns;
 import org.hh99.gradation.domain.entity.User;
 
@@ -32,11 +33,23 @@ public class CardDto {
 
     private String cardColor;
 
-    private int cardOrder;
+    private Integer cardOrder;
 
     private LocalDate deadLine;
 
     private String url;
 
     private String worker;
+
+    public CardDto(Card card){
+        this.users = card.getUsers();
+        this.columns = card.getColumns();
+        this.cardName = card.getCardName();
+        this.cardDescription = card.getCardDescription();
+        this.cardColor = card.getCardColor();
+        this.cardOrder = card.getCardOrder();
+        this.deadLine = card.getDeadLine();
+        this.url = card.getUrl();
+        this.worker = card.getWorker();
+    }
 }

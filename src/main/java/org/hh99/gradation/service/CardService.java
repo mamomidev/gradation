@@ -28,6 +28,7 @@ public class CardService {
 	// 컬럼 내부에 카드 생성
 	public ResponseEntity createCard(CardDto cardDto) {
 		cardDto.setUsers(userRepository.findByEmail(jwtUtil.getUserEmail()));
+		// Board 체크?
 		columnsRepository.findById(cardDto.getColumns().getId()).orElseThrow(() -> new EntityNotFoundException());
 
 		cardRepository.save(new Card(cardDto));
@@ -41,10 +42,10 @@ public class CardService {
 	// 작업자 할당/변경
 	// 마감일
 	@Transactional
-	public ResponseEntity updateCard(Long cardId, CardDto cardDto) {
+	public ResponseEntity<CardDto> updateCard(Long cardId, CardDto cardDto) {
 		Card card = userValidation(cardId);
 		card.update(cardDto);
-		return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.OK).body(new CardDto(card));
 	}
 
 	//TODO 2024-01-16 14:19 삭제
@@ -68,7 +69,7 @@ public class CardService {
 	private Card userValidation(Long cardId) {
 		Card card = cardRepository.findById(cardId).orElseThrow(() -> new EntityNotFoundException("없는 카드 입니다."));
 		if (!card.getUsers().getEmail().equals(jwtUtil.getUserEmail())) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("카드를 생성한 사람이 아닙니다.");
 		}
 		return card;
 	}
