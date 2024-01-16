@@ -17,5 +17,8 @@ public class ColumnsController {
         columnsService.createColumns(boardId, columnsDto);
     }
 
-
+    @PatchMapping("/board/{boardId}/columns/{columnsId}")
+    public void modifyColumns(@PathVariable Long columnsId, @RequestBody ColumnsDto columnsDto) {
+        columnsService.modifyColumns(columnsId, columnsDto);
+    }
 }
