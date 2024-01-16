@@ -12,9 +12,13 @@ public class ColumnsController {
 
     private final ColumnsService columnsService;
 
-    @GetMapping("/board/{boardId}/columns")
+    @PostMapping("/board/{boardId}/columns")
     public void createColumns(@PathVariable Long boardId, @RequestBody ColumnsDto columnsDto) {
         columnsService.createColumns(boardId, columnsDto);
     }
 
+    @PatchMapping("/board/{boardId}/columns/{columnsId}")
+    public void modifyColumns(@PathVariable Long columnsId, @RequestBody ColumnsDto columnsDto) {
+        columnsService.modifyColumns(columnsId, columnsDto);
+    }
 }

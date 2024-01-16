@@ -11,6 +11,6 @@ public class ColumnsDto {
 
 	private Long id;
 	private Long boardId;
-	private String columnName;
-	private Integer columnOrder;
+	private String columnsName;
+	private Integer columnsOrder;
 }
