@@ -2,10 +2,11 @@ package org.hh99.gradation.repository;
 
 import java.util.List;
 
-import org.hh99.gradation.domain.entity.Board;
+import org.hh99.gradation.domain.entity.BoardUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface BoardUserRepository extends JpaRepository<BoardUser, Long> {
+	List<BoardUser> findAllByUserId(Long userId);
 }

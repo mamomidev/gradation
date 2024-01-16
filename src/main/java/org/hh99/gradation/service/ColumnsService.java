@@ -28,5 +28,9 @@ public class ColumnsService {
         columns.modify(columnsDto);
     }
 
-
+    @Transactional
+    public void deleteColumns(Long columnsId) {
+        Columns columns = columnsRepository.findById(columnsId).orElseThrow();
+        columnsRepository.delete(columns);
+    }
 }

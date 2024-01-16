@@ -17,8 +17,13 @@ public class ColumnsController {
         columnsService.createColumns(boardId, columnsDto);
     }
 
-    @PatchMapping("/board/{boardId}/columns/{columnsId}")
+    @PatchMapping("/columns/{columnsId}")
     public void modifyColumns(@PathVariable Long columnsId, @RequestBody ColumnsDto columnsDto) {
         columnsService.modifyColumns(columnsId, columnsDto);
+    }
+
+    @DeleteMapping("/columns/{columnsId}")
+    public void deleteColumns(@PathVariable Long columnsId) {
+        columnsService.deleteColumns(columnsId);
     }
 }
