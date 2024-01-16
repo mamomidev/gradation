@@ -51,8 +51,21 @@ public class Card {
         this.users = cardDto.getUsers();
         this.columns = cardDto.getColumns();
         this.cardName = cardDto.getCardName();
+        this.cardDescription = cardDto.getCardDescription();
         this.cardColor = cardDto.getCardColor();
         this.cardOrder = cardDto.getCardOrder();
         this.deadLine = cardDto.getDeadLine();
+    }
+
+    public void cardInfoUpdate(CardDto cardDto){
+        this.cardName = cardDto.getCardName();
+        this.cardDescription = cardDto.getCardDescription();
+        this.cardColor = cardDto.getCardColor();
+        this.users = cardDto.getUsers();
+    }
+
+    public void cardMove(CardDto cardDto){
+        this.cardOrder = cardDto.getCardOrder();
+        this.columns = cardDto.getColumns();
     }
 }

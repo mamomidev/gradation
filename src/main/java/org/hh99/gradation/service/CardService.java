@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.common.util.StringUtils;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -46,19 +47,27 @@ public class CardService {
 	// 색상
 	// 작업자 할당/변경
 	// 마감일
-	public ResponseEntity updateCard() {
+	public ResponseEntity updateCard(Long cardId, CardDto cardDto) {
+		// 자기 자신인지 확인 필요
+		Card card = cardRepository.findById(cardId).orElseThrow(()-> new EntityNotFoundException());
+		card.cardInfoUpdate(cardDto);
 		return null;
 	}
 
 	//TODO 2024-01-16 14:19 삭제
-	public ResponseEntity deleteCard() {
+	public ResponseEntity deleteCard(Long cardId) {
+		// 자기 자신인지 확인 필요
+		cardRepository.deleteById(cardId);
 		return null;
 	}
 
 	//TODO 2024-01-16 14:19 이동
 	// 같은 컬럼 내에서 카드의 위치를 변경할 수 있어야 합니다.
 	// 카드를 다른 컬럼으로 이동
-	public ResponseEntity moveCard() {
+	public ResponseEntity moveCard(Long cardId, CardDto cardDto) {
+		// 자기 자신인지 확인 필요
+		Card card = cardRepository.findById(cardId).orElseThrow(()-> new EntityNotFoundException());
+		card.cardMove(cardDto);
 		return null;
 	}
 }

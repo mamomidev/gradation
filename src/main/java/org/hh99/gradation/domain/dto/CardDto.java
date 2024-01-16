@@ -19,6 +19,7 @@ public class CardDto {
     private User users;
     private Columns columns;
     private String cardName;
+    private String cardDescription;
     private String cardColor;
     @Setter
     private Integer cardOrder;
