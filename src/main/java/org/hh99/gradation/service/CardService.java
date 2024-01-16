@@ -2,7 +2,9 @@ package org.hh99.gradation.service;
 
 import org.hh99.gradation.domain.dto.CardDto;
 import org.hh99.gradation.domain.entity.Card;
+import org.hh99.gradation.jwt.JwtUtil;
 import org.hh99.gradation.repository.CardRepository;
+import org.hibernate.annotations.processing.Find;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,23 +18,11 @@ import lombok.RequiredArgsConstructor;
 public class CardService {
 
 	private final CardRepository cardRepository;
+	private final JwtUtil jwtUtil;
 
 	//TODO 2024-01-16 14:18 생성
 	// 컬럼 내부에 카드 생성
 	public ResponseEntity createCard(CardDto cardDto) {
-
-		if (cardDto.getUsers() == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		}
-
-		if (cardDto.getColumns() == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		}
-
-		if (StringUtils.isBlank(cardDto.getCardName())) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		}
-
 		if (cardDto.getCardOrder() == null) {
 			cardDto.setCardOrder(1);
 		}
@@ -48,26 +38,32 @@ public class CardService {
 	// 작업자 할당/변경
 	// 마감일
 	public ResponseEntity updateCard(Long cardId, CardDto cardDto) {
-		// 자기 자신인지 확인 필요
-		Card card = cardRepository.findById(cardId).orElseThrow(()-> new EntityNotFoundException());
+		Card card = userValidation(cardId);
 		card.cardInfoUpdate(cardDto);
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	//TODO 2024-01-16 14:19 삭제
 	public ResponseEntity deleteCard(Long cardId) {
-		// 자기 자신인지 확인 필요
-		cardRepository.deleteById(cardId);
-		return null;
+		Card card = userValidation(cardId);
+		cardRepository.delete(card);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	//TODO 2024-01-16 14:19 이동
 	// 같은 컬럼 내에서 카드의 위치를 변경할 수 있어야 합니다.
 	// 카드를 다른 컬럼으로 이동
 	public ResponseEntity moveCard(Long cardId, CardDto cardDto) {
-		// 자기 자신인지 확인 필요
-		Card card = cardRepository.findById(cardId).orElseThrow(()-> new EntityNotFoundException());
+		Card card = userValidation(cardId);
 		card.cardMove(cardDto);
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
+	private Card userValidation(Long cardId) {
+		Card card = cardRepository.findById(cardId).orElseThrow(() -> new EntityNotFoundException());
+		if (card.getUsers().getId() != jwtUtil.getUserId()) {
+			// 유저 일치 안함
+		}
+		return card;
 	}
 }
