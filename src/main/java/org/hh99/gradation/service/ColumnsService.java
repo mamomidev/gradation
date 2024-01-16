@@ -25,12 +25,18 @@ public class ColumnsService {
     @Transactional
     public void modifyColumns(Long columnsId, ColumnsDto columnsDto) {
         Columns columns = columnsRepository.findById(columnsId).orElseThrow();
-        columns.modify(columnsDto);
+        columns.modifyColumnsName(columnsDto);
     }
 
     @Transactional
     public void deleteColumns(Long columnsId) {
         Columns columns = columnsRepository.findById(columnsId).orElseThrow();
         columnsRepository.delete(columns);
+    }
+
+    @Transactional
+    public void modifyColumnsOrder(Long columnsId, ColumnsDto columnsDto) {
+        Columns columns = columnsRepository.findById(columnsId).orElseThrow();
+        columns.modifyColumnsOrder(columnsDto);
     }
 }

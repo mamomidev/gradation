@@ -22,6 +22,11 @@ public class ColumnsController {
         columnsService.modifyColumns(columnsId, columnsDto);
     }
 
+    @PatchMapping("columns/{columnsId}")
+    public void modifyColumnsOrder(@PathVariable Long columnsId, @RequestBody ColumnsDto columnsDto) {
+        columnsService.modifyColumnsOrder(columnsId, columnsDto);
+    }
+
     @DeleteMapping("/columns/{columnsId}")
     public void deleteColumns(@PathVariable Long columnsId) {
         columnsService.deleteColumns(columnsId);
