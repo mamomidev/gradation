@@ -9,6 +9,8 @@ import org.hh99.gradation.repository.ColumnsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ColumnsService {
@@ -38,5 +40,10 @@ public class ColumnsService {
     public void modifyColumnsOrder(Long columnsId, ColumnsDto columnsDto) {
         Columns columns = columnsRepository.findById(columnsId).orElseThrow();
         columns.modifyColumnsOrder(columnsDto);
+    }
+
+    public List<ColumnsDto> getAllColumnsByBoardId(Long boardId) {
+        return columnsRepository.findByBoardId(boardId).stream().map(ColumnsDto::new).toList();
+
     }
 }
