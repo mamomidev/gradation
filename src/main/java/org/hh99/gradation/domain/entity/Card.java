@@ -13,25 +13,26 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Card {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "card_id")
+    @Column
     private Long id;
 
-    @Column(name = "card_name")
+    @Column
     private String cardName;
 
-    @Column(name = "card_color")
+    @Column
+    private String cardDescription;
+
+    @Column
     private String cardColor;
 
-    @Column(name = "card_order")
+    @Column
     private Integer cardOrder;
 
-    @Column(name = "deadline")
+    @Column
     private LocalDate deadLine;
 
-    @Column(name = "url")
+    @Column
     private String url;
 }
-
