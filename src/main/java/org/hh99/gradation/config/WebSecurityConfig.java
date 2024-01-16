@@ -56,6 +56,7 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests((authorizeHttpRequests)->
                 authorizeHttpRequests
+                    .requestMatchers("/static/**").permitAll()
                     .requestMatchers("/api/login").permitAll()
                     .requestMatchers("/api/join").permitAll()
                     .requestMatchers("/health").permitAll()
