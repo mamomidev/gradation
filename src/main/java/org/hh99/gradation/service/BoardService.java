@@ -1,10 +1,8 @@
 package org.hh99.gradation.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.hh99.gradation.domain.dto.BoardDto;
-import org.hh99.gradation.domain.dto.BoardUserDto;
 import org.hh99.gradation.domain.dto.UserDto;
 import org.hh99.gradation.domain.entity.Board;
 import org.hh99.gradation.domain.entity.BoardUser;
@@ -16,7 +14,6 @@ import org.hh99.gradation.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -83,7 +80,7 @@ public class BoardService {
 
 		Board board = findBoard(boardId);
 
-		for(UserDto userDto : userlist) {
+		for (UserDto userDto : userlist) {
 			User user = userRepository.findByEmail(userDto.getEmail());
 			BoardUser boardUser = new BoardUser(board, user);
 
