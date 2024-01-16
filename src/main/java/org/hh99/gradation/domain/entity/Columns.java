@@ -29,8 +29,13 @@ public class Columns {
     private Board board;
 
     public Columns(ColumnsDto columnsDto,Board board) {
-        this.columnsName = columnsDto.getColumnName();
-        this.columnsOrder = columnsDto.getColumnOrder();
+        this.columnsName = columnsDto.getColumnsName();
+        this.columnsOrder = columnsDto.getColumnsOrder();
         this.board = board;
+    }
+
+    public void modify(ColumnsDto columnsDto) {
+        this.columnsName = columnsDto.getColumnsName();
+        this.columnsOrder = columnsDto.getColumnsOrder();
     }
 }

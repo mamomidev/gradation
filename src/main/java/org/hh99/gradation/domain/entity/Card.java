@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-import org.hh99.gradation.domain.dto.CardDto;
-
 @Entity
 @Getter
 @Table(name = "cards")
