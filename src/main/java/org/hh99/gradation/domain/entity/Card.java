@@ -1,11 +1,20 @@
 package org.hh99.gradation.domain.entity;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
+
+import org.hh99.gradation.domain.dto.CardDto;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -45,25 +54,27 @@ public class Card {
     @Column
     private String url;
 
+    @Column
+    private String worker;
+
     public Card(CardDto cardDto) {
-        this.users = cardDto.getUsers();
-        this.columns = cardDto.getColumns();
         this.cardName = cardDto.getCardName();
         this.cardDescription = cardDto.getCardDescription();
         this.cardColor = cardDto.getCardColor();
         this.cardOrder = cardDto.getCardOrder();
         this.deadLine = cardDto.getDeadLine();
+        this.worker = cardDto.getWorker();
+        this.columns = cardDto.getColumns();
     }
 
-    public void cardInfoUpdate(CardDto cardDto){
+    public void update(CardDto cardDto){
         this.cardName = cardDto.getCardName();
         this.cardDescription = cardDto.getCardDescription();
         this.cardColor = cardDto.getCardColor();
-        this.users = cardDto.getUsers();
+        this.worker = cardDto.getWorker();
     }
 
-    public void cardMove(CardDto cardDto){
+    public void move(CardDto cardDto){
         this.cardOrder = cardDto.getCardOrder();
-        this.columns = cardDto.getColumns();
     }
 }
