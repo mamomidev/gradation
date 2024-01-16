@@ -12,23 +12,9 @@ public class ColumnsController {
 
     private final ColumnsService columnsService;
 
-    @PostMapping("/board/{boardId}/columns")
+    @GetMapping("/board/{boardId}/columns")
     public void createColumns(@PathVariable Long boardId, @RequestBody ColumnsDto columnsDto) {
         columnsService.createColumns(boardId, columnsDto);
     }
 
-    @PatchMapping("/columns/{columnsId}")
-    public void modifyColumns(@PathVariable Long columnsId, @RequestBody ColumnsDto columnsDto) {
-        columnsService.modifyColumns(columnsId, columnsDto);
-    }
-
-    @PatchMapping("columns/{columnsId}")
-    public void modifyColumnsOrder(@PathVariable Long columnsId, @RequestBody ColumnsDto columnsDto) {
-        columnsService.modifyColumnsOrder(columnsId, columnsDto);
-    }
-
-    @DeleteMapping("/columns/{columnsId}")
-    public void deleteColumns(@PathVariable Long columnsId) {
-        columnsService.deleteColumns(columnsId);
-    }
 }
