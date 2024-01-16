@@ -32,10 +32,9 @@
         <div class="button-6"></div>
     </div>
     <div class="primary-7">
-        <button class="title-8"><span class="button-9">TO DO</span></button
-        ><button class="primary-a">
-        <span class="title-b">In progress</span></button
-    ><button class="button-c"><span class="primary-d">Done</span></button>
+        <button class="title-8" th:each="columns : ${columns}">
+            <span class="button-9" th:text="${columns.columnsName}"></span>
+        </button>
     </div>
     <div class="section-e">
         <div class="list">
