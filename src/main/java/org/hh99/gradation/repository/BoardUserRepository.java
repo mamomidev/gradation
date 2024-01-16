@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BoardUserRepository extends JpaRepository<BoardUser, Long> {
 	List<BoardUser> findAllByUserId(Long userId);
+
+	List<BoardUser> findAllByBoardId(Long boardId);
 }
