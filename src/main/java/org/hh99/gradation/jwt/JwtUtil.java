@@ -9,6 +9,7 @@ import java.util.Date;
 
 import org.hh99.gradation.domain.UserAuthEnum;
 import org.hh99.gradation.message.ErrorMessage;
+import org.hh99.gradation.security.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -94,6 +95,11 @@ public class JwtUtil {
     public String getUserEmail(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
+    }
+
+    public Long getUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return ((UserDetailsImpl)authentication.getPrincipal()).getUserId();
     }
 
     public String getTokenFromRequest(HttpServletRequest req) {

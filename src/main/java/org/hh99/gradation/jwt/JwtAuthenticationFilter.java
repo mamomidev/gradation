@@ -58,7 +58,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		Authentication authResult) throws IOException, ServletException {
 		log.info(LOGIN_SUCCESS_AND_JWT_TOKEN_CREATION_LOG);
 
-		Long id = ((UserDetailsImpl)authResult.getPrincipal()).getUser().getId();
+		Long id = ((UserDetailsImpl)authResult.getPrincipal()).getUserId();
 		String email = ((UserDetailsImpl)authResult.getPrincipal()).getUsername();
 		UserAuthEnum auth = ((UserDetailsImpl)authResult.getPrincipal()).getUser().getAuthor();
 
