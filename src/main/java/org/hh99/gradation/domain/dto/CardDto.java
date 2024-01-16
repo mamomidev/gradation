@@ -6,6 +6,8 @@ import org.hh99.gradation.domain.entity.Card;
 import org.hh99.gradation.domain.entity.Columns;
 import org.hh99.gradation.domain.entity.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -24,6 +26,7 @@ public class CardDto {
     private User users;
 
     @NotNull(message = "컬럼을 선택해주세요.")
+    @JsonIgnore
     private Columns columns;
 
     @NotEmpty(message = "카드명을 입력해주세요.")
