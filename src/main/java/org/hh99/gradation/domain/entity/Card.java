@@ -16,6 +16,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hh99.gradation.domain.dto.CardDto;
 
 @Entity
 @Getter

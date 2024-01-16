@@ -34,7 +34,11 @@ public class Columns {
         this.board = board;
     }
 
-    public void modify(ColumnsDto columnsDto) {
+    public void modifyColumnsName(ColumnsDto columnsDto) {
         this.columnsName = columnsDto.getColumnsName();
+    }
+
+    public void modifyColumnsOrder(ColumnsDto columnsDto) {
+        this.columnsOrder = columnsDto.getColumnsOrder();
     }
 }
