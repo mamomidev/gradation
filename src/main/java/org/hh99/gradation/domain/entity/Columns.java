@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hh99.gradation.domain.dto.ColumnsDto;
 
 @Entity
 @Getter
@@ -18,12 +19,18 @@ public class Columns {
     private Long id;
 
     @Column
-    private String columnName;
+    private String columnsName;
 
     @Column
-    private Integer columnOrder;
+    private Integer columnsOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Board board;
+
+    public Columns(ColumnsDto columnsDto,Board board) {
+        this.columnsName = columnsDto.getColumnName();
+        this.columnsOrder = columnsDto.getColumnOrder();
+        this.board = board;
+    }
 }
