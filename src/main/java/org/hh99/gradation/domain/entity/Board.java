@@ -1,5 +1,7 @@
 package org.hh99.gradation.domain.entity;
 
+import org.hh99.gradation.domain.dto.BoardDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table
+@Table(name = "boards")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,8 +27,25 @@ public class Board {
 	private String boardName;
 
 	@Column
-	private String boardOrder;
+	private String boardColor;
 
 	@Column
 	private String boardDescription;
+
+	@Column
+	private Long createUserId;
+
+	public Board(BoardDto boardDto, Long userId) {
+		this.boardName = boardDto.getBoardName();
+		this.boardColor = boardDto.getBoardColor();
+		this.boardDescription = boardDto.getBoardDescription();
+		this.createUserId = userId;
+	}
+
+	public void update(BoardDto boardDto) {
+		this.boardName = boardDto.getBoardName();
+		this.boardColor = boardDto.getBoardColor();
+		this.boardDescription = boardDto.getBoardDescription();
+	}
+
 }

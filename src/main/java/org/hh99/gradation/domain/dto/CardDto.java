@@ -1,18 +1,17 @@
 package org.hh99.gradation.domain.dto;
 
-import jakarta.validation.Valid;
+import java.time.LocalDate;
+
+import org.hh99.gradation.domain.entity.Card;
+import org.hh99.gradation.domain.entity.Columns;
+import org.hh99.gradation.domain.entity.User;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDate;
-
-import org.hh99.gradation.domain.entity.Columns;
-import org.hh99.gradation.domain.entity.Comment;
-import org.hh99.gradation.domain.entity.User;
 
 @Getter
 @NoArgsConstructor
@@ -21,10 +20,10 @@ public class CardDto {
 
     private Long id;
 
-    @NotNull(message = "없는 회원 입니다.")
+    @Setter
     private User users;
 
-    @NotNull(message = "없는 컬럼 입니다.")
+    @NotNull(message = "컬럼을 선택해주세요.")
     private Columns columns;
 
     @NotEmpty(message = "카드명을 입력해주세요.")
@@ -34,10 +33,23 @@ public class CardDto {
 
     private String cardColor;
 
-    @Setter
     private Integer cardOrder;
 
     private LocalDate deadLine;
 
     private String url;
+
+    private String worker;
+
+    public CardDto(Card card){
+        this.users = card.getUsers();
+        this.columns = card.getColumns();
+        this.cardName = card.getCardName();
+        this.cardDescription = card.getCardDescription();
+        this.cardColor = card.getCardColor();
+        this.cardOrder = card.getCardOrder();
+        this.deadLine = card.getDeadLine();
+        this.url = card.getUrl();
+        this.worker = card.getWorker();
+    }
 }
