@@ -22,14 +22,14 @@ public class Card {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "users_id", nullable = false)
     private User users;
 
     @ManyToOne
-    @JoinColumn(name = "columns_id")
+    @JoinColumn(name = "columns_id", nullable = false)
     private Columns columns;
 
-    @Column
+    @Column(nullable = false)
     private String cardName;
 
     @Column
@@ -46,4 +46,26 @@ public class Card {
 
     @Column
     private String url;
+
+    public Card(CardDto cardDto) {
+        this.users = cardDto.getUsers();
+        this.columns = cardDto.getColumns();
+        this.cardName = cardDto.getCardName();
+        this.cardDescription = cardDto.getCardDescription();
+        this.cardColor = cardDto.getCardColor();
+        this.cardOrder = cardDto.getCardOrder();
+        this.deadLine = cardDto.getDeadLine();
+    }
+
+    public void cardInfoUpdate(CardDto cardDto){
+        this.cardName = cardDto.getCardName();
+        this.cardDescription = cardDto.getCardDescription();
+        this.cardColor = cardDto.getCardColor();
+        this.users = cardDto.getUsers();
+    }
+
+    public void cardMove(CardDto cardDto){
+        this.cardOrder = cardDto.getCardOrder();
+        this.columns = cardDto.getColumns();
+    }
 }
