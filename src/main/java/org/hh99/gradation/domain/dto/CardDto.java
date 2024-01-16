@@ -4,12 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hh99.gradation.domain.entity.Columns;
+import org.hh99.gradation.domain.entity.User;
 
 import java.time.LocalDate;
-
-import org.hh99.gradation.domain.entity.Columns;
-import org.hh99.gradation.domain.entity.Comment;
-import org.hh99.gradation.domain.entity.User;
 
 @Getter
 @NoArgsConstructor

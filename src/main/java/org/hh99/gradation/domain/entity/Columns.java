@@ -36,6 +36,5 @@ public class Columns {
 
     public void modify(ColumnsDto columnsDto) {
         this.columnsName = columnsDto.getColumnsName();
-        this.columnsOrder = columnsDto.getColumnsOrder();
     }
 }
