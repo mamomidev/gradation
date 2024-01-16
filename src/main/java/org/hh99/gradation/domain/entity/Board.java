@@ -23,13 +23,13 @@ public class Board {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column
+	@Column(nullable = false)
 	private String boardName;
 
-	@Column
+	@Column(nullable = false)
 	private String boardColor;
 
-	@Column
+	@Column(nullable = false)
 	private String boardDescription;
 
 	@Column

@@ -1,10 +1,9 @@
 package org.hh99.gradation.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.hh99.gradation.domain.dto.BoardDto;
-import org.hh99.gradation.domain.dto.BoardUserDto;
+import org.hh99.gradation.domain.dto.UserDto;
 import org.hh99.gradation.domain.entity.Board;
 import org.hh99.gradation.domain.entity.BoardUser;
 import org.hh99.gradation.domain.entity.User;
@@ -15,7 +14,6 @@ import org.hh99.gradation.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -30,8 +28,7 @@ public class BoardService {
 	public void createBoard(BoardDto boardDto) {
 
 		Long userId = jwtUtil.getUserId();
-		User user = userRepository.findById(userId).orElseThrow(() ->
-			new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+		User user = findUser(userId);
 
 		Board board = new Board(boardDto, userId);
 		BoardUser boardUser = new BoardUser(board, user);
@@ -41,6 +38,7 @@ public class BoardService {
 	}
 
 	public List<BoardDto> getBoardList() {
+
 		Long userId = jwtUtil.getUserId();
 		List<BoardDto> boardDtoList = boardUserRepository.findAllByUserId(userId)
 			.stream().map(boardUser -> new BoardDto(boardUser.getBoard())).toList();
@@ -49,6 +47,7 @@ public class BoardService {
 	}
 
 	public BoardDto getBoard(Long boardId) {
+
 		Board board = findBoard(boardId);
 		return new BoardDto(board);
 	}
@@ -71,12 +70,32 @@ public class BoardService {
 
 		if (!checkUser(userId, board.getCreateUserId()))
 			throw new IllegalArgumentException("보드를 생성한 사용자가 아닙니다.");
+		List<BoardUser> boardUserList = boardUserRepository.findAllByBoardId(boardId);
+
+		boardUserRepository.deleteAll(boardUserList);
 		boardRepository.delete(board);
+	}
+
+	public void inviteBoard(Long boardId, List<UserDto> userlist) {
+
+		Board board = findBoard(boardId);
+
+		for (UserDto userDto : userlist) {
+			User user = userRepository.findByEmail(userDto.getEmail());
+			BoardUser boardUser = new BoardUser(board, user);
+
+			boardUserRepository.save(boardUser);
+		}
 	}
 
 	private Board findBoard(Long boardId) {
 		return boardRepository.findById(boardId).orElseThrow(() ->
 			new IllegalArgumentException("보드를 찾을 수 없습니다."));
+	}
+
+	private User findUser(Long userId) {
+		return userRepository.findById(userId).orElseThrow(() ->
+			new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 	}
 
 	private Boolean checkUser(Long userId, Long boardUserId) {
