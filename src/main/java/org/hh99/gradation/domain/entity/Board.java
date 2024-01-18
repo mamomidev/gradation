@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,9 @@ public class Board {
 	@Column
 	private Long createUserId;
 
+	@Column
+	private Integer likes;
+
 	public Board(BoardDto boardDto, Long userId) {
 		this.boardName = boardDto.getBoardName();
 		this.boardColor = boardDto.getBoardColor();
@@ -46,6 +50,7 @@ public class Board {
 		this.boardName = boardDto.getBoardName();
 		this.boardColor = boardDto.getBoardColor();
 		this.boardDescription = boardDto.getBoardDescription();
+		this.likes += 1;
 	}
 
 }
