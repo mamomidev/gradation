@@ -2,6 +2,8 @@ package org.hh99.gradation.service;
 
 import java.util.List;
 
+import org.hh99.gradation.aop.DistributedLock;
+import org.hh99.gradation.config.RedisConfig;
 import org.hh99.gradation.domain.dto.BoardDto;
 import org.hh99.gradation.domain.dto.UserDto;
 import org.hh99.gradation.domain.entity.Board;
@@ -11,6 +13,7 @@ import org.hh99.gradation.jwt.JwtUtil;
 import org.hh99.gradation.repository.BoardRepository;
 import org.hh99.gradation.repository.BoardUserRepository;
 import org.hh99.gradation.repository.UserRepository;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +27,15 @@ public class BoardService {
 	private final BoardUserRepository boardUserRepository;
 	private final UserRepository userRepository;
 	private final JwtUtil jwtUtil;
+	private final RedissonClient redissonClient;
 
+	@DistributedLock(key = "#key")
 	public void createBoard(BoardDto boardDto) {
 
 		Long userId = jwtUtil.getUserId();
+		if(getBoardUserSize(userId) >= 10) {
+			throw new IllegalArgumentException("보드의 최대 생성 제한이 넘습니다.");
+		}
 		User user = findUser(userId);
 
 		Board board = new Board(boardDto, userId);
@@ -52,7 +60,7 @@ public class BoardService {
 		return new BoardDto(board);
 	}
 
-	@Transactional
+	@DistributedLock(key = "#like")
 	public void updateBoard(BoardDto boardDto, Long boardId) {
 
 		Long userId = jwtUtil.getUserId();
@@ -102,4 +110,8 @@ public class BoardService {
 		return userId.equals(boardUserId);
 	}
 
+	private int getBoardUserSize(Long userId) {
+		List<BoardUser> boardUserList = boardUserRepository.findAllByUserId(userId);
+		return boardUserList.size();
+	}
 }
