@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>트렐로 카드 상세정보</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
+    <link rel="stylesheet" href="/css/card.css" />
+</head>
+<body>
+<div class="main-container">
+    <div class="section">
+        <div class="container">
+            <span class="title" th:text="${card.cardName}">카드 이름</span>
+            <div class="tab-group">
+                <button class="tab"><span class="title-1">속해있는 보드명</span></button>
+                <button class="tab-2"><span class="title-3">속해있는 컬럼명</span></button>
+            </div>
+        </div>
+        <div class="vector"></div>
+    </div>
+    <div class="section-4">
+        <div class="container-5"><span class="title-6" th:text="${card.cardDescription}">카드 내용</span></div>
+        <div class="list">
+            <div class="row">
+                <div class="article">
+                    <div class="frame">
+                        <span class="title-7" >마감일<br/></span>
+                        <span class="subtitle" th:text="${card.deadLine}">2022-01-01</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="article">
+                    <div class="frame">
+                        <span class="title-7">작업자<br/></span>
+                        <span class="subtitle" th:text="${card.worker}">test@test.com</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="vector-b"></div>
+    </div>
+    <div class="section-c">
+        <div class="list-d">
+            <div class="row-e">
+                <div class="article-f">
+                    <div class="frame-10">
+                        <span class="title-11">유저</span>
+                        <span class="subtitle-12">댓글</span>
+                    </div>
+                    <div class="image-container"></div>
+                </div>
+            </div>
+        </div>
+        <div class="vector-1d"></div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,69 +1,116 @@
 package org.hh99.gradation.service;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import org.hh99.gradation.domain.dto.CardDto;
 import org.hh99.gradation.domain.entity.Card;
 import org.hh99.gradation.jwt.JwtUtil;
 import org.hh99.gradation.repository.CardRepository;
-import org.hibernate.annotations.processing.Find;
+import org.hh99.gradation.repository.ColumnsRepository;
+import org.hh99.gradation.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import io.micrometer.common.util.StringUtils;
+import com.amazonaws.SdkClientException;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class CardService {
 
+	private final UserRepository userRepository;
 	private final CardRepository cardRepository;
+	private final ColumnsRepository columnsRepository;
 	private final JwtUtil jwtUtil;
 
-	//TODO 2024-01-16 14:18 생성
-	// 컬럼 내부에 카드 생성
-	public ResponseEntity createCard(CardDto cardDto) {
-		if (cardDto.getCardOrder() == null) {
-			cardDto.setCardOrder(1);
-		}
 
+	private final AmazonS3 s3Client;
+
+	@Value("${cloud.aws.s3.bucket}")
+	private String bucketName;
+
+	public List<CardDto> getCards(Long columnsId) {
+		return cardRepository.findAllByColumnsId(columnsId).stream()
+			.map(CardDto::new)
+			.collect(Collectors.toList());
+	}
+
+	public CardDto getCard(Long cardId) {
+		return new CardDto(cardRepository.findById(cardId).orElseThrow(EntityNotFoundException::new));
+	}
+
+	public ResponseEntity<String> createCard(CardDto cardDto, MultipartFile file) throws IOException {
+		cardDto.setUsers(userRepository.findByEmail(jwtUtil.getUserEmail()));
+		// Board 체크?
+		columnsRepository.findById(cardDto.getColumns().getId()).orElseThrow(EntityNotFoundException::new);
+
+		String awsUrl = "";
+		if(file != null) awsUrl = uploadFile(file);
+		cardDto.setUrl(awsUrl);
 		cardRepository.save(new Card(cardDto));
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-	//TODO 2024-01-16 14:18 수정
-	// 이름
-	// 설명
-	// 색상
-	// 작업자 할당/변경
-	// 마감일
-	public ResponseEntity updateCard(Long cardId, CardDto cardDto) {
+	@Transactional
+	public ResponseEntity<CardDto> updateCard(Long cardId, CardDto cardDto) {
 		Card card = userValidation(cardId);
-		card.cardInfoUpdate(cardDto);
-		return ResponseEntity.status(HttpStatus.OK).build();
+		card.update(cardDto);
+		return ResponseEntity.status(HttpStatus.OK).body(new CardDto(card));
 	}
 
-	//TODO 2024-01-16 14:19 삭제
-	public ResponseEntity deleteCard(Long cardId) {
+	@Transactional
+	public ResponseEntity<String> deleteCard(Long cardId) {
 		Card card = userValidation(cardId);
 		cardRepository.delete(card);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
-	//TODO 2024-01-16 14:19 이동
-	// 같은 컬럼 내에서 카드의 위치를 변경할 수 있어야 합니다.
-	// 카드를 다른 컬럼으로 이동
-	public ResponseEntity moveCard(Long cardId, CardDto cardDto) {
+	@Transactional
+	public ResponseEntity<String> moveCard(Long cardId, CardDto cardDto) {
 		Card card = userValidation(cardId);
-		card.cardMove(cardDto);
+		card.move(cardDto);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	private Card userValidation(Long cardId) {
-		Card card = cardRepository.findById(cardId).orElseThrow(() -> new EntityNotFoundException());
-		if (card.getUsers().getId() != jwtUtil.getUserId()) {
-			// 유저 일치 안함
+		Card card = cardRepository.findById(cardId).orElseThrow(() -> new EntityNotFoundException("없는 카드 입니다."));
+		if (!card.getUsers().getEmail().equals(jwtUtil.getUserEmail())) {
+			throw new IllegalArgumentException("카드를 생성한 사람이 아닙니다.");
 		}
 		return card;
+	}
+
+	public String uploadFile(MultipartFile file) throws IOException {
+		String fileName = generateFileName(file);
+		try{
+			s3Client.putObject(bucketName, fileName, file.getInputStream(),getObjectMetadata(file));
+			String defaultUrl = "https://s3.amazonaws.com/";
+			return defaultUrl + fileName;
+		} catch (SdkClientException e){
+			throw new IOException("Error uploading file to S3", e);
+		}
+	}
+
+	private ObjectMetadata getObjectMetadata(MultipartFile file) {
+		ObjectMetadata objectMetadata = new ObjectMetadata();
+		objectMetadata.setContentType(file.getContentType());
+		objectMetadata.setContentLength(file.getSize());
+		return objectMetadata;
+	}
+
+	// 파일명 설정
+	private String generateFileName(MultipartFile file){
+		return UUID.randomUUID() + "-" + file.getOriginalFilename();
 	}
 }
