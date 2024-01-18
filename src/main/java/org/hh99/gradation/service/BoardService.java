@@ -27,7 +27,6 @@ public class BoardService {
 	private final BoardUserRepository boardUserRepository;
 	private final UserRepository userRepository;
 	private final JwtUtil jwtUtil;
-	private final RedissonClient redissonClient;
 
 	@DistributedLock(key = "#key")
 	public void createBoard(BoardDto boardDto) {
