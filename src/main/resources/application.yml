@@ -1,16 +1,16 @@
 jwt:
   secret:
-    key: ${JWT.SECRET.KEY}
+    key: ${jwt.secret.key}
 spring:
   datasource:
-    url: jdbc:mysql://${RDS.HOSTNAME}:${RDS.PORT}/${RDS.DB.NAME}?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: ${RDS.USERNAME}
-    password: ${RDS.PASSWORD}
+    url: jdbc:mysql://${rds.hostname}:${rds.port}/${rds.db.name}?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: ${rds.username}
+    password: ${rds.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
   data:
     redis:
-      host: ${REDIS.HOSTNAME}
-      port: ${REDIS.PORT}
+      host: ${redis.hostname}
+      port: ${redis.port}
 
   jpa:
     hibernate:
@@ -23,14 +23,14 @@ spring:
 cloud:
   aws:
     s3:
-      bucket: ${S3.BUCKETNAME}
+      bucket: ${s3.bucketname}
     credentials:
-      access-key: ${S3.ACCESS.KEY}
-      secret-key: ${S3.SECRET.KEY}
+      access-key: ${s3.access.key}
+      secret-key: ${s3.secret.key}
     region:
-      static: ${S3.REGION}
+      static: ${s3.region}
       auto: false
     stack:
       auto: false
 server:
-  port: ${SERVER.PORT}
+  port: ${server.port}
