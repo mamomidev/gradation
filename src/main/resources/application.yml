@@ -33,4 +33,4 @@ cloud:
     stack:
       auto: false
 server:
-  port: 8080
+  port: ${SERVER_PORT}
