@@ -6,7 +6,6 @@
 }
 
 .main-container {
-    overflow: hidden;
 }
 
 .main-container,
@@ -27,7 +26,6 @@ button {
     height: 1316px;
     margin: 0 auto;
     background: #ffffff;
-    overflow: hidden;
 }
 .section {
     display: flex;
@@ -41,7 +39,6 @@ button {
     top: 0;
     left: 0;
     padding: 60px 170px 60px 170px;
-    overflow: hidden;
 }
 .container {
     display: flex;
@@ -121,7 +118,6 @@ button {
     width: 100px;
     height: 100px;
     z-index: 6;
-    overflow: hidden;
 }
 .image {
     align-self: stretch;
@@ -192,7 +188,6 @@ button {
     text-align: left;
     text-overflow: initial;
     z-index: 11;
-    overflow: hidden;
 }
 .row-2 {
     display: flex;
@@ -228,7 +223,6 @@ button {
     width: 100px;
     height: 100px;
     z-index: 14;
-    overflow: hidden;
 }
 .image-5 {
     align-self: stretch;
@@ -299,7 +293,6 @@ button {
     text-align: left;
     text-overflow: initial;
     z-index: 19;
-    overflow: hidden;
 }
 .row-a {
     display: flex;
@@ -335,7 +328,6 @@ button {
     width: 100px;
     height: 100px;
     z-index: 22;
-    overflow: hidden;
 }
 .image-d {
     align-self: stretch;
@@ -406,7 +398,6 @@ button {
     text-align: left;
     text-overflow: initial;
     z-index: 27;
-    overflow: hidden;
 }
 .row-12 {
     display: flex;
@@ -442,7 +433,6 @@ button {
     width: 100px;
     height: 100px;
     z-index: 30;
-    overflow: hidden;
 }
 .image-15 {
     align-self: stretch;
@@ -513,7 +503,6 @@ button {
     text-align: left;
     text-overflow: initial;
     z-index: 35;
-    overflow: hidden;
 }
 .row-1a {
     display: flex;
@@ -550,7 +539,6 @@ button {
     width: 100px;
     height: 100px;
     z-index: 38;
-    overflow: hidden;
 }
 .image-1d {
     align-self: stretch;
@@ -560,8 +548,6 @@ button {
     position: relative;
     min-width: 0;
     min-height: 0;
-    background: url(./assets/images/f646f48a-05cd-402d-8118-8701a92f390d.png)
-    no-repeat center;
     background-size: cover;
     z-index: 39;
 }
@@ -607,7 +593,6 @@ button {
     padding: 20px 20px 20px 20px;
     background: #ffffff;
     z-index: 42;
-    overflow: hidden;
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.12);
 }
 .trello {
@@ -687,8 +672,6 @@ button {
     right: 0;
     bottom: 0;
     left: 0;
-    background: url(./assets/images/3f8e6596-64e7-4e89-aab2-7eb3a3cb50a7.png)
-    no-repeat center;
     background-size: cover;
     z-index: 48;
 }
@@ -705,7 +688,6 @@ button {
     left: 0;
     padding: 60px 60px 60px 60px;
     z-index: 49;
-    overflow: hidden;
 }
 .container-20 {
     display: flex;

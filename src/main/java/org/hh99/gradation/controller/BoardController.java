@@ -6,6 +6,8 @@ import org.hh99.gradation.domain.dto.BoardDto;
 import org.hh99.gradation.domain.dto.UserDto;
 import org.hh99.gradation.service.BoardService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class BoardController {
@@ -31,8 +33,9 @@ public class BoardController {
 	}
 
 	@GetMapping("/boards")
-	public ResponseEntity<Object> getBoardList(){
-		return ResponseEntity.ok(boardService.getBoardList());
+	public String getBoardList(Model model){
+		model.addAttribute("boardList", boardService.getBoardList());
+		return "boardlist";
 	}
 
 	@GetMapping("/boards/{boardId}")
