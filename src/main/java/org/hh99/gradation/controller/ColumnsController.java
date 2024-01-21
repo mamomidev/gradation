@@ -22,7 +22,7 @@ public class ColumnsController {
         List<ColumnsDto> columnsDtoList = columnsService.getAllColumnsByBoardId(boardId);
         model.addAttribute("columns", columnsDtoList);
 
-        return "columns";
+        return "kanban";
     }
 
     @PostMapping("/board/{boardId}/columns")
