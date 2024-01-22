@@ -1,14 +1,13 @@
 package org.hh99.gradation.jwt;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
 import org.hh99.gradation.domain.UserAuthEnum;
-import org.hh99.gradation.message.ErrorMessage;
 import org.hh99.gradation.message.JwtErrorMessage;
 import org.hh99.gradation.security.UserDetailsImpl;
 import org.slf4j.Logger;
@@ -69,17 +68,12 @@ public class JwtUtil {
     }
 
     public void addJwtToCookie(String token, HttpServletResponse res) {
-        try {
-            token = URLEncoder.encode(token, "utf-8").replaceAll("\\+", "%20");
+		token = URLEncoder.encode(token, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+		Cookie cookie = new Cookie(AUTHORIZATION_HEADER, token);
+		cookie.setPath("/");
 
-            Cookie cookie = new Cookie(AUTHORIZATION_HEADER, token);
-            cookie.setPath("/");
-
-            res.addCookie(cookie);
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getMessage());
-        }
-    }
+		res.addCookie(cookie);
+	}
 
     public String substringToken(String tokenValue) {
         if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
@@ -108,12 +102,8 @@ public class JwtUtil {
         if(cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(AUTHORIZATION_HEADER)) {
-                    try {
-                        return URLDecoder.decode(cookie.getValue(), "UTF-8");
-                    } catch (UnsupportedEncodingException e) {
-                        return null;
-                    }
-                }
+					return URLDecoder.decode(cookie.getValue(), StandardCharsets.UTF_8);
+				}
             }
         }
         return null;
