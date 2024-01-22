@@ -9,6 +9,7 @@ import java.util.Date;
 
 import org.hh99.gradation.domain.UserAuthEnum;
 import org.hh99.gradation.message.ErrorMessage;
+import org.hh99.gradation.message.JwtErrorMessage;
 import org.hh99.gradation.security.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,8 +85,8 @@ public class JwtUtil {
         if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
             return tokenValue.substring(7);
         }
-        logger.error(ErrorMessage.EXIST_TOKEN_ERROR_MESSAGE.getErrorMessage());
-        throw new NullPointerException(ErrorMessage.EXIST_TOKEN_ERROR_MESSAGE.getErrorMessage());
+        logger.error(JwtErrorMessage.EXIST_TOKEN_ERROR_MESSAGE.getErrorMessage());
+        throw new NullPointerException(JwtErrorMessage.EXIST_TOKEN_ERROR_MESSAGE.getErrorMessage());
     }
 
     public Claims getUserInfoFromToken(String token) {
