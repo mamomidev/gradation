@@ -13,14 +13,12 @@ import lombok.NoArgsConstructor;
 public class BoardDto {
 
 	private Long id;
-	@NotNull(message = "보드 이름을 입력해주세요.")
 	private String boardName;
-	@NotNull(message = "보드 색상 정해주세요.")
 	private String boardColor;
-	@NotNull(message = "보드 설명을 입력해주세요.")
 	private String boardDescription;
 
 	public BoardDto(Board entity) {
+		this.id = entity.getId();
 		this.boardName = entity.getBoardName();
 		this.boardColor = entity.getBoardColor();
 		this.boardDescription = entity.getBoardDescription();

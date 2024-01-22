@@ -24,8 +24,20 @@
               <span class="subtitle" th:text="${board.boardDescription}"></span>
               <span class="board-color" th:text="${board.boardColor}"></span>
             </div>
-            <span class="modify-delete">수정하기<br /><br />삭제하기</span>
+            <div class="btn-wrap">
+              <button id="board-invite-button" class="btn">초대</button><br/>
+              <button id="board-modify-button" class="btn" th:attr="data-row-id='boardRow-' + ${board.id}">수정</button><br/>
+              <button id="board-delete-button" class="btn" th:attr="data-row-id='boardRow-' + ${board.id}">삭제</button>
+            </div>
           </div>
+        </div>
+      </div>
+      <div class="section-1f">
+        <div class="container-20">
+          <span class="trello-title">© 2024 Trello</span>
+          <span class="terms-of-service-title">Terms of Service</span>
+          <span class="privacy-policy-title">Privacy Policy</span>
+          <span class="contact-us-title">Contact Us</span>
         </div>
       </div>
     </div>
@@ -39,16 +51,9 @@
     </div>
     <div class="vector"></div>
   </div>
-  <div class="section-1f">
-    <div class="container-20">
-      <span class="trello-title">© 2024 Trello</span>
-      <span class="terms-of-service-title">Terms of Service</span>
-      <span class="privacy-policy-title">Privacy Policy</span>
-      <span class="contact-us-title">Contact Us</span>
-    </div>
-  </div>
-</div>
 
+</div>
+<!-- 보드 생성 Modal -->
 <div id="boardModal" class="modal">
   <div class="modal-content">
     <span class="close" id="closeModal">&times;</span>
@@ -61,14 +66,40 @@
       <input type="color" id="boardColor" name="boardColor" value="#adfa22" required>
       <br/>
       <label for="boardDescription">보드 설명:</label>
+      <br/>
       <textarea id="boardDescription" name="boardDescription" rows="4"></textarea>
       <br/>
       <button type="button" id="submitBtn">보드 만들기</button>
     </form>
   </div>
 </div>
-</body>
 
+<!-- 보드 수정 modal -->
+<div id="editBoardModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeEditModal">&times;</span>
+    <h2>보드 수정</h2>
+    <form id="editBoardForm">
+      <label for="editBoardName">보드 이름:</label>
+      <input type="text" id="editBoardName" name="editBoardName" required>
+      <br/>
+      <label for="editBoardColor">보드 색상:</label>
+      <input type="color" id="editBoardColor" name="editBoardColor" required>
+      <br/>
+      <label for="editBoardDescription">보드 설명:</label>
+      <br/>
+      <textarea id="editBoardDescription" name="editBoardDescription" rows="4"></textarea>
+      <br/>
+      <button type="button" id="submitEditBtn">보드 수정</button>
+    </form>
+  </div>
+</div>
+</body>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  let boardList = [[${boardList}]];
+  /*]]>*/
+</script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     let boardColors = document.getElementsByClassName("board-color");
@@ -84,27 +115,102 @@
     const submitBtn = document.getElementById('submitBtn');
     const boardForm = document.getElementById('boardForm');
 
-    // Show modal
     createBoardBtn.addEventListener('click', function () {
       modal.style.display = 'block';
     });
 
-    // Close modal
     closeModal.addEventListener('click', function () {
       modal.style.display = 'none';
     });
 
-    // Handle form submission
     submitBtn.addEventListener('click', function () {
-      const boardName = document.getElementById('boardName').value;
-      const boardColor = document.getElementById('boardColor').value;
-      const boardDescription = document.getElementById('boardDescription').value;
+      let boardName = document.getElementById('boardName').value;
+      let boardColor = document.getElementById('boardColor').value;
+      let boardDescription = document.getElementById('boardDescription').value;
+      let boardData = {
+        "boardName" :boardName,
+        "boardColor" : boardColor,
+        "boardDescription" : boardDescription
+      }
+      if(boardName === "") alert("이름을 입력해주세요")
+      if(boardColor === "") alert("색상을 입력해주세요")
+      if(boardDescription === "") alert("설명을 입력해주세요")
 
-      modal.style.display = 'none';
-
-      boardForm.reset();
+      if(boardName !== "" && boardColor !== "" && boardDescription !== ""){
+        fetch('/api/boards', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json' // JSON 형태의 데이터 전송을 명시
+          },
+          body: JSON.stringify(boardData) // 데이터를 JSON 문자열로 변환하여 전송
+        })
+                .then(data => {
+                  if(data.status === 200){
+                    alert("생성 되었습니다.")
+                    modal.style.display = 'none';
+                    location.href = "/api/boards"
+                  }
+                })
+        boardForm.reset();
+      }
     });
-  })
+
+    const editModal = document.getElementById('editBoardModal');
+    const closeEditModal = document.getElementById('closeEditModal');
+    const submitEditBtn = document.getElementById('submitEditBtn');
+    let selectedBoardId = null;
+
+    for (let i = 0; i < rows.length; i++) {
+      const editButton = rows[i].querySelector('#board-modify-button');
+
+      editButton.addEventListener('click', function () {
+        selectedBoardId = editButton.getAttribute('data-row-id').split('-')[1];
+        const selectedBoard = boardList.find(board => board.id == selectedBoardId);
+
+        document.getElementById('editBoardName').value = selectedBoard.boardName;
+        document.getElementById('editBoardColor').value = selectedBoard.boardColor;
+        document.getElementById('editBoardDescription').value = selectedBoard.boardDescription;
+
+        editModal.style.display = 'block';
+      });
+    }
+
+    closeEditModal.addEventListener('click', function () {
+      editModal.style.display = 'none';
+    });
+
+    submitEditBtn.addEventListener('click', function () {
+      let boardName = document.getElementById('editBoardName').value;
+      let boardColor = document.getElementById('editBoardColor').value;
+      let boardDescription = document.getElementById('editBoardDescription').value
+      let editBoardData = {
+        "boardName": boardName,
+        "boardColor": boardColor,
+        "boardDescription": boardDescription
+      }
+      if(boardName === "") alert("이름을 입력해주세요")
+      if(boardColor === "") alert("색상을 입력해주세요")
+      if(boardDescription === "") alert("설명을 입력해주세요")
+
+      if(boardName !== "" && boardColor !== "" && boardDescription !== ""){
+        fetch('/api/boards/'+ selectedBoardId, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json' // JSON 형태의 데이터 전송을 명시
+          },
+          body: JSON.stringify(editBoardData) // 데이터를 JSON 문자열로 변환하여 전송
+        })
+                .then(data => {
+                  if(data.status === 200){
+                    alert("수정 되었습니다.")
+                    editModal.style.display = 'none';
+                    location.href = "/api/boards"
+                  }
+                })
+      }
+    });
+  });
+
 
 </script>
 </html>
