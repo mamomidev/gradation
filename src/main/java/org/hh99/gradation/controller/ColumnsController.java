@@ -23,7 +23,6 @@ public class ColumnsController {
     public String getAllColumnsByBoardId(@PathVariable Long boardId, Model model) {
 
         List<ColumnsDto> columnsDtoList = columnsService.getAllColumnsByBoardId(boardId);
-
         model.addAttribute("columns", columnsDtoList);
 
         return "kanban";
