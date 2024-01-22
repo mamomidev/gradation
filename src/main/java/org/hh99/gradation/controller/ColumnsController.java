@@ -1,9 +1,7 @@
 package org.hh99.gradation.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.hh99.gradation.domain.dto.CardDto;
 import org.hh99.gradation.domain.dto.ColumnsDto;
-import org.hh99.gradation.service.CardService;
 import org.hh99.gradation.service.ColumnsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,13 +15,11 @@ import java.util.List;
 public class ColumnsController {
 
     private final ColumnsService columnsService;
-    private final CardService cardService;
 
     @GetMapping("/board/{boardId}/columns")
     public String getAllColumnsByBoardId(@PathVariable Long boardId, Model model) {
 
         List<ColumnsDto> columnsDtoList = columnsService.getAllColumnsByBoardId(boardId);
-
         model.addAttribute("columns", columnsDtoList);
 
         return "kanban";
