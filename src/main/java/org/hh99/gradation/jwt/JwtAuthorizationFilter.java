@@ -44,7 +44,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 		String path = req.getRequestURI();
 
 		// 회원가입과 로그인 경로에 대해서는 JWT 검증 로직을 건너뜁니다.
-		if (path.contains("index") || "/".equals(path) || "/login".equals(path) || "/signup".equals(path)) {
+		if (path.contains("css") || "/".equals(path) || "/login".equals(path) || "/api/toSignup".equals(path)) {
 			filterChain.doFilter(req, res);
 			return;
 		}
