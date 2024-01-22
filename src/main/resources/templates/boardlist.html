@@ -102,6 +102,7 @@
 </script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+    // 색 넣어주기
     let boardColors = document.getElementsByClassName("board-color");
     let rows = document.getElementsByClassName('row')
 
@@ -109,6 +110,7 @@
       rows[i].style.backgroundColor = boardColors[i].textContent;
     }
 
+    // 생성
     const createBoardBtn = document.getElementById('board-create-btn');
     const modal = document.getElementById('boardModal');
     const closeModal = document.getElementById('closeModal');
@@ -155,6 +157,7 @@
       }
     });
 
+    // 수정
     const editModal = document.getElementById('editBoardModal');
     const closeEditModal = document.getElementById('closeEditModal');
     const submitEditBtn = document.getElementById('submitEditBtn');
@@ -209,6 +212,32 @@
                 })
       }
     });
+
+    // 삭제
+    for (let i = 0; i < rows.length; i++) {
+      const deleteButton = rows[i].querySelector('#board-delete-button');
+
+      deleteButton.addEventListener('click', function () {
+        selectedBoardId = deleteButton.getAttribute('data-row-id').split('-')[1];
+
+        // 확인 모달 대신 confirm 함수 사용
+        const userConfirmed = confirm('정말로 삭제하시겠습니까?');
+
+        if (userConfirmed) {
+          fetch('/api/boards/'+ selectedBoardId, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json' // JSON 형태의 데이터 전송을 명시
+            }
+          }).then(data => {
+            if(data.status === 200){
+              alert("삭제 되었습니다.")
+              location.href = "/api/boards"
+            }
+          })
+        }
+      });
+    }
   });
 
 
