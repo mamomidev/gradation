@@ -83,6 +83,7 @@
             },
             "contents":contents
         }
+
         fetch("/api/user/cards/comments", {
             method: "POST", // 또는 'PUT'
             headers: {
@@ -106,13 +107,21 @@
                     </div>
                 </div>`)
             document.querySelector("#createCommentContents").value = "";
-        }).catch((error)=> {
-
         });
     });
 
-    document.querySelector("#createCommentBtn").addEventListener("click", async () => {
-
+    let deleteBtnList = document.querySelectorAll(".deleteCommentBtn");
+    [].forEach.call(deleteBtnList, (el) => {
+        el.addEventListener("click", (el) => {
+            fetch("/api/user/cards/comments/" + el.target.getAttribute("data"), {
+                method: "DELETE"
+            }).then(async (res) => {
+                if (res.status !== 200) {
+                    throw new Error(res.statusText);
+                }
+                el.target.parentNode.parentNode.parentNode.remove();
+            });
+        });
     });
 </script>
 </html>
