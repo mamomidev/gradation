@@ -28,10 +28,9 @@ public class CommentService {
 			.collect(Collectors.toList());
 	}
 
-	public ResponseEntity createComments(CommentDto commentDto){
+	public ResponseEntity<CommentDto> createComments(CommentDto commentDto){
 		commentDto.setUser(userRepository.findByEmail(jwtUtil.getUserEmail()));
-		commentRepository.save(new Comment(commentDto));
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok().body(new CommentDto(commentRepository.save(new Comment(commentDto))));
 	}
 
 	public ResponseEntity deleteComments(Long commentId){

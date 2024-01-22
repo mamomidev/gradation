@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,8 @@ public class CommentController {
 	}
 
 	@PostMapping("/cards/comments")
-	public ResponseEntity createComments(@RequestBody CommentDto commentDto){
+	@ResponseBody
+	public ResponseEntity<CommentDto> createComments(@RequestBody CommentDto commentDto){
 		return commentService.createComments(commentDto);
 	}
 
