@@ -58,6 +58,16 @@
                         <div class="image-container"></div>
                     </div>
                 </div>
+                <div class="row-e" th:each="comment : ${comment}">
+                    <div class="article-f">
+                        <div class="frame-10">
+                            <span class="title-11" th:text="${comment.user.email}">유저 이메일</span>
+                            <span class="subtitle-12" th:text="${comment.contents}"></span>
+                            <span class="subtitle-12"><button class="deleteCommentBtn" th:attrprepend="data=${comment.id}">삭제</button></span>
+                        </div>
+                        <div class="image-container"></div>
+                    </div>
+                </div>
             </div>
             <div class="vector-1d"></div>
         </div>
@@ -73,6 +83,7 @@
             },
             "contents":contents
         }
+
         fetch("/api/user/cards/comments", {
             method: "POST", // 또는 'PUT'
             headers: {
@@ -88,15 +99,28 @@
             commentList.insertAdjacentHTML('beforeend', `<div class="row-e">
                     <div class="article-f">
                         <div class="frame-10">
-                            <span class="title-11">TEST</span>
+                            <span class="title-11">[[${userEmail}]]</span>
                             <span class="subtitle-12">${json.contents}</span>
+                            <span class="subtitle-12"><button class="deleteCommentBtn" data="${json.id}">삭제</button></span>
                         </div>
                         <div class="image-container"></div>
                     </div>
                 </div>`)
-            console.log("성공:", json);
-        }).catch((error)=> {
-            console.error("실패:", error);
+            document.querySelector("#createCommentContents").value = "";
+        });
+    });
+
+    let deleteBtnList = document.querySelectorAll(".deleteCommentBtn");
+    [].forEach.call(deleteBtnList, (el) => {
+        el.addEventListener("click", (el) => {
+            fetch("/api/user/cards/comments/" + el.target.getAttribute("data"), {
+                method: "DELETE"
+            }).then(async (res) => {
+                if (res.status !== 200) {
+                    throw new Error(res.statusText);
+                }
+                el.target.parentNode.parentNode.parentNode.remove();
+            });
         });
     });
 </script>
