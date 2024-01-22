@@ -3,6 +3,7 @@ package org.hh99.gradation.jwt;
 import java.io.IOException;
 
 import org.hh99.gradation.message.ErrorMessage;
+import org.hh99.gradation.message.JwtErrorMessage;
 import org.hh99.gradation.security.UserDetailsServiceImpl;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -38,12 +39,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws
 		IOException,
 		ServletException {
-		res.setContentType("text/plain;charset=utf-8");
+		res.setContentType("text/html; charset=utf-8");
 
 		String path = req.getRequestURI();
 
 		// 회원가입과 로그인 경로에 대해서는 JWT 검증 로직을 건너뜁니다.
-		if ("/login".equals(path) || "/signup".equals(path)) {
+		if (path.contains("index") || "/".equals(path) || "/login".equals(path) || "/signup".equals(path)) {
 			filterChain.doFilter(req, res);
 			return;
 		}
@@ -52,7 +53,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
 		if (tokenValue == null) {
 			res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			res.getWriter().write(ErrorMessage.NULL_JWT_ERROR_MESSAGE.getErrorMessage());
+			res.getWriter().write(JwtErrorMessage.NULL_JWT_ERROR_MESSAGE.getErrorMessage());
 			return;
 		}
 
@@ -64,19 +65,19 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 				Jwts.parserBuilder().setSigningKey(jwtUtil.getKey()).build().parseClaimsJws(tokenValue);
 			} catch (SecurityException | MalformedJwtException e) {
 				res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-				res.getWriter().write(ErrorMessage.INVALID_JWT_ERROR_MESSAGE.getErrorMessage());
+				res.getWriter().write(JwtErrorMessage.INVALID_JWT_ERROR_MESSAGE.getErrorMessage());
 				return;
 			} catch (ExpiredJwtException e) {
 				res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-				res.getWriter().write(ErrorMessage.EXPIRED_JWT_ERROR_MESSAGE.getErrorMessage());
+				res.getWriter().write(JwtErrorMessage.EXPIRED_JWT_ERROR_MESSAGE.getErrorMessage());
 				return;
 			} catch (UnsupportedJwtException e) {
 				res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-				res.getWriter().write(ErrorMessage.UNSUPPORTED_JWT_ERROR_MESSAGE.getErrorMessage());
+				res.getWriter().write(JwtErrorMessage.UNSUPPORTED_JWT_ERROR_MESSAGE.getErrorMessage());
 				return;
 			} catch (IllegalArgumentException e) {
 				res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-				res.getWriter().write(ErrorMessage.EMPTY_JWT_ERROR_MESSAGE.getErrorMessage());
+				res.getWriter().write(JwtErrorMessage.EMPTY_JWT_ERROR_MESSAGE.getErrorMessage());
 				return;
 			}
 
