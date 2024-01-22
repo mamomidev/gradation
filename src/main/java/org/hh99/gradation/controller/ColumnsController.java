@@ -16,7 +16,7 @@ public class ColumnsController {
 
     private final ColumnsService columnsService;
 
-    @GetMapping("/board/{boardId}/columns")
+    @GetMapping("/boards/{boardId}/columns")
     public String getAllColumnsByBoardId(@PathVariable Long boardId, Model model) {
 
         List<ColumnsDto> columnsDtoList = columnsService.getAllColumnsByBoardId(boardId);
@@ -25,7 +25,7 @@ public class ColumnsController {
         return "kanban";
     }
 
-    @PostMapping("/board/{boardId}/columns")
+    @PostMapping("/boards/{boardId}/columns")
     public String createColumns(@PathVariable Long boardId, @RequestBody ColumnsDto columnsDto) {
         columnsService.createColumns(boardId, columnsDto);
         return "columns";
