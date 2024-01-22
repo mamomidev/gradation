@@ -1,15 +1,18 @@
 package org.hh99.gradation.service;
 
 import lombok.RequiredArgsConstructor;
+import org.hh99.gradation.domain.dto.CardDto;
 import org.hh99.gradation.domain.dto.ColumnsDto;
 import org.hh99.gradation.domain.entity.Board;
 import org.hh99.gradation.domain.entity.Columns;
 import org.hh99.gradation.repository.BoardRepository;
+import org.hh99.gradation.repository.CardRepository;
 import org.hh99.gradation.repository.ColumnsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +20,8 @@ public class ColumnsService {
 
     private final ColumnsRepository columnsRepository;
     private final BoardRepository boardRepository;
+    private final CardRepository cardRepository;
+
     @Transactional
     public void createColumns(Long boardId, ColumnsDto columnsDto) {
         Board board = boardRepository.findById(boardId).orElseThrow();
@@ -43,7 +48,11 @@ public class ColumnsService {
     }
 
     public List<ColumnsDto> getAllColumnsByBoardId(Long boardId) {
-        return columnsRepository.findByBoardId(boardId).stream().map(ColumnsDto::new).toList();
-
+        List<ColumnsDto> columnsDtoList = columnsRepository.findByBoardId(boardId).stream().map(ColumnsDto::new).toList();
+        columnsDtoList.forEach(e -> {
+            List<CardDto> cardDtoList = cardRepository.findAllByColumnsId(e.getId()).stream().map(CardDto::new).toList();
+            e.setCardDtoList(cardDtoList);
+        });
+        return columnsDtoList;
     }
 }
