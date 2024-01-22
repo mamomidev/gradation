@@ -36,9 +36,6 @@ public class Board {
 	@Column
 	private Long createUserId;
 
-	@Column
-	private Integer likes;
-
 	public Board(BoardDto boardDto, Long userId) {
 		this.boardName = boardDto.getBoardName();
 		this.boardColor = boardDto.getBoardColor();
@@ -50,7 +47,6 @@ public class Board {
 		this.boardName = boardDto.getBoardName();
 		this.boardColor = boardDto.getBoardColor();
 		this.boardDescription = boardDto.getBoardDescription();
-		this.likes += 1;
 	}
 
 }

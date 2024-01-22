@@ -26,6 +26,9 @@ button {
     height: 1316px;
     margin: 0 auto;
     background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .section {
     display: flex;
@@ -108,6 +111,7 @@ button {
     border: 1px solid rgba(0, 0, 0, 0.1);
     z-index: 5;
     border-radius: 6px;
+    height: 150px;
 }
 .image-container {
     display: flex;
@@ -681,10 +685,8 @@ button {
     justify-content: center;
     flex-wrap: nowrap;
     gap: 60px;
-    position: absolute;
     width: 1440px;
     height: 220px;
-    top: 1096px;
     left: 0;
     padding: 60px 60px 60px 60px;
     z-index: 49;
@@ -818,5 +820,15 @@ button {
 .close:focus {
     color: black;
     text-decoration: none;
+    cursor: pointer;
+}
+.btn{
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 20px;
     cursor: pointer;
 }

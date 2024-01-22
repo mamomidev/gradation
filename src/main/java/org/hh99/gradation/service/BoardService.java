@@ -59,7 +59,7 @@ public class BoardService {
 		return new BoardDto(board);
 	}
 
-	@DistributedLock(key = "#like")
+	@DistributedLock(key = "#boardUpdate")
 	public void updateBoard(BoardDto boardDto, Long boardId) {
 
 		Long userId = jwtUtil.getUserId();
