@@ -52,7 +52,6 @@ public class CardService {
 
 	public ResponseEntity<String> createCard(CardDto cardDto, MultipartFile file) throws IOException {
 		cardDto.setUsers(userRepository.findByEmail(jwtUtil.getUserEmail()));
-		// Board 체크?
 		columnsRepository.findById(cardDto.getColumns().getId()).orElseThrow(EntityNotFoundException::new);
 
 		String awsUrl = "";

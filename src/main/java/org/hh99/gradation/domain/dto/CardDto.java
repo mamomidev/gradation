@@ -26,7 +26,6 @@ public class CardDto {
     private User users;
 
     @NotNull(message = "컬럼을 선택해주세요.")
-    @JsonIgnore
     private Columns columns;
 
     @NotEmpty(message = "카드명을 입력해주세요.")
@@ -46,6 +45,7 @@ public class CardDto {
     private String worker;
 
     public CardDto(Card card){
+        this.id = card.getId();
         this.users = card.getUsers();
         this.columns = card.getColumns();
         this.cardName = card.getCardName();

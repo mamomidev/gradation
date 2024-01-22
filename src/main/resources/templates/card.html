@@ -8,53 +8,85 @@
     <link rel="stylesheet" href="/css/card.css" />
 </head>
 <body>
-<div class="main-container">
-    <div class="section">
-        <div class="container">
-            <span class="title" th:text="${card.cardName}">카드 이름</span>
-            <div class="tab-group">
-                <button class="tab"><span class="title-1">속해있는 보드명</span></button>
-                <button class="tab-2"><span class="title-3">속해있는 컬럼명</span></button>
+    <div class="main-container">
+        <div class="section">
+            <div class="container">
+                <span class="title" th:text="${card.cardName}">카드 이름</span>
+                <div class="tab-group">
+                    <button class="tab"><span class="title-1" th:text="${card.columns.board.boardName}">속해있는 보드명</span></button>
+                    <button class="tab-2"><span class="title-3" th:text="${card.columns.columnsName}">속해있는 컬럼명</span></button>
+                </div>
             </div>
+            <div class="vector"></div>
         </div>
-        <div class="vector"></div>
-    </div>
-    <div class="section-4">
-        <div class="container-5"><span class="title-6" th:text="${card.cardDescription}">카드 내용</span></div>
-        <div class="list">
-            <div class="row">
-                <div class="article">
-                    <div class="frame">
-                        <span class="title-7" >마감일<br/></span>
-                        <span class="subtitle" th:text="${card.deadLine}">2022-01-01</span>
+        <div class="section-4">
+            <div class="container-5"><span class="title-6" th:text="${card.cardDescription}">카드 내용</span></div>
+            <div class="list">
+                <th:block th:if='${not #strings.isEmpty(card.deadLine)}'>
+                    <div class="row">
+                        <div class="article">
+                            <div class="frame">
+                                <span class="title-7" >마감일<br/></span>
+                                <span class="subtitle" th:text="${card.deadLine}">2022-01-01</span>
+                            </div>
+                        </div>
+                    </div>
+                </th:block>
+
+                <th:block th:if='${not #strings.isEmpty(card.worker)}'>
+                    <div class="row">
+                        <div class="article">
+                            <div class="frame">
+                                <span class="title-7">작업자<br/></span>
+                                <span class="subtitle" th:text="${card.worker}">test@test.com</span>
+                            </div>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+            <div class="vector-b"></div>
+        </div>
+        <div class="section-c">
+            <div class="list-d">
+                <div class="row-e">
+                    <div class="article-f">
+                        <div class="frame-10">
+                            <span class="title-11" th:text="${userEmail}">유저 이메일</span>
+                            <span class="subtitle-12"><input id="createCommentContents" type="text" style="width:100%"></span>
+                            <span class="subtitle-12"><button id="createCommentBtn">등록</button></span>
+                        </div>
+                        <div class="image-container"></div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="article">
-                    <div class="frame">
-                        <span class="title-7">작업자<br/></span>
-                        <span class="subtitle" th:text="${card.worker}">test@test.com</span>
-                    </div>
-                </div>
-            </div>
+            <div class="vector-1d"></div>
         </div>
-        <div class="vector-b"></div>
     </div>
-    <div class="section-c">
-        <div class="list-d">
-            <div class="row-e">
-                <div class="article-f">
-                    <div class="frame-10">
-                        <span class="title-11">유저</span>
-                        <span class="subtitle-12">댓글</span>
-                    </div>
-                    <div class="image-container"></div>
-                </div>
-            </div>
-        </div>
-        <div class="vector-1d"></div>
-    </div>
-</div>
 </body>
+
+<script>
+    document.querySelector("#createCommentBtn").addEventListener("click", async () => {
+        const contents = document.querySelector("#createCommentContents").value;
+        const data = {
+            "card":{
+                "id":[[${card.id}]]
+            },
+            "contents":contents
+        }
+        fetch("/api/user/cards/comments", {
+            method: "POST", // 또는 'PUT'
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        }).then((result) => {
+            if (result.status !== 200){
+                throw new Error(result.);
+            }
+            console.log("성공:", result);
+        }).catch((error)=> {
+            console.error("실패:", error);
+        });
+    });
+</script>
 </html>
