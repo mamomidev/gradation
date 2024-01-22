@@ -89,6 +89,7 @@ public class BoardService {
 
 		for (UserDto userDto : userlist) {
 			User user = userRepository.findByEmail(userDto.getEmail());
+			if(user == null) throw new IllegalArgumentException("없는 사용자입니다.");
 			BoardUser boardUser = new BoardUser(board, user);
 
 			boardUserRepository.save(boardUser);
