@@ -19,8 +19,14 @@
     <h2 class="section-title"><span>Kanban Demo</span></h2>
 
     <div class="board">
-        <div class="board-column todo" th:each="column : ${columns}">
-            <div class="board-column-header" th:text="${column.columnsName}">To do</div>
+        <div class="board-column todo" th:each="column : ${columns}" data-th-id="${column.board.id}">
+            <div class="board-column-header" data-th-id="${column.id}" th:text="${column.columnsName}">
+
+            </div>
+
+            <button name="editButton" onclick="editColumn(this)">Edit</button>
+            <button name="deleteButton" onclick="deleteColumn(this)">Delete</button>
+
             <div class="board-column-content">
                 <div class="board-item" th:each="card : ${column.cardList}">
                     <div class="board-item-content" th:text="${card.cardName}">1</div>
@@ -31,4 +37,58 @@
 
 </section>
 </body>
+<script th:inline="javascript">
+    function editColumn(button) {
+        const columnDiv = button.closest('.todo');
+        const headerElement = columnDiv.querySelector('.board-column-header');
+        const boardId = columnDiv.getAttribute('id');
+        const columnId = headerElement.getAttribute('id');
+        const newColumnName = prompt('새로운 컬럼 이름을 입력하세요:', headerElement.textContent);
+
+        if (columnId !== null) {
+            const data = {
+                columnsName: newColumnName
+            };
+
+            fetch('/api/user/boards/'+ boardId + '/columns/' + columnId, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => {
+                    if (response.redirected) {
+                        // 리다이렉션이 발생한 경우
+                        window.location.href = response.url;  // 리다이렉션 수행
+                    } else if (!response.ok) {
+                        // 리다이렉션이 발생하지 않고, 응답이 실패한 경우
+                        throw new Error('Network response was not ok');
+                    } else {
+                        // 리다이렉션이 발생하지 않고, 응답이 성공한 경우
+                        return response.json();
+                    }
+                })
+                .then(result => {
+                    console.log(result);
+                    headerElement.textContent = newColumnName;
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    }
+
+
+    function deleteColumn(button) {
+        const columnId = button.getAttribute('data-column-id');
+        // 여기에서 열 삭제 로직 구현
+        const confirmDelete = confirm('Are you sure you want to delete this column?');
+        if (confirmDelete) {
+            alert('Column ' + columnId + ' will be deleted');
+            // 여기에서 열 삭제 API 호출 또는 기타 로직 수행
+        }
+    }
+</script>
 </html>
