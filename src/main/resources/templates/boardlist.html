@@ -339,6 +339,21 @@
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     }
+
+    let articles = document.getElementsByClassName("article");
+    Array.from(articles).forEach(article => {
+      article.addEventListener('click', function () {
+        const boardId = article.querySelector('#board-invite-button').getAttribute('data-row-id').split('-')[1];
+
+        fetch('/api/user/boards/' + boardId + '/columns', {
+          method: 'GET'
+        }).then(response => {
+          if (response.ok) {
+            location.href = "/api/user/boards/" + boardId + "/columns";
+          }
+        });
+      });
+    })
   });
 
 
