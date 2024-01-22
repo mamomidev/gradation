@@ -69,6 +69,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 				return;
 			} catch (ExpiredJwtException e) {
 				res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				res.getWriter().write("<script>function deleteCookie(name) {\n"
+					+ "document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';\n"
+					+ "}\n"
+					+ "deleteCookie('Authorization');</script>");
 				res.getWriter().write(JwtErrorMessage.EXPIRED_JWT_ERROR_MESSAGE.getErrorMessage());
 				return;
 			} catch (UnsupportedJwtException e) {
