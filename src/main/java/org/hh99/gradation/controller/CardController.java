@@ -6,6 +6,7 @@ import java.util.List;
 import org.hh99.gradation.domain.dto.CardDto;
 import org.hh99.gradation.jwt.JwtUtil;
 import org.hh99.gradation.service.CardService;
+import org.hh99.gradation.service.CommentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,10 +28,12 @@ import lombok.RequiredArgsConstructor;
 public class CardController {
 
 	private final CardService cardService;
+	private final CommentService commentService;
 	private final JwtUtil jwtUtil;
 	@GetMapping("/cards/{cardId}")
 	public String cards(@PathVariable Long cardId, Model model){
 		model.addAttribute("card", cardService.getCard(cardId));
+		model.addAttribute("comment", commentService.getComments(cardId));
 		model.addAttribute("userEmail", jwtUtil.getUserEmail());
 		return "card";
 	}
