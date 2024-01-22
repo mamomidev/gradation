@@ -828,7 +828,57 @@ button {
     border-radius: 3px;
     background-color: #fff;
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.custom-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 500px;
+    height: 700px;
+}
+#emailSearch {
+    width: 300px;
+    font-size: 14px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    border: none;
+    border-bottom: 1px solid #888;
+}
+.invite-btn{
+    padding: 5px 10px;
+    border: 1px solid #000;
+    border-radius: 3px;
+    background-color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+#userInviteList > li{
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
+    height: 30px;
+}
+.invite-delete-btn{
+    line-height: 0;
+    padding: 10px 6px;
+    border: 1px solid #000;
+    border-radius: 3px;
+    background-color: #fff;
+    font-size: 12px;
+    font-weight: 600;
     margin-bottom: 20px;
     cursor: pointer;
 }

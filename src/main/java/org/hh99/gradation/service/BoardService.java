@@ -32,7 +32,7 @@ public class BoardService {
 	public void createBoard(BoardDto boardDto) {
 
 		Long userId = jwtUtil.getUserId();
-		if(getBoardUserSize(userId) >= 10) {
+		if(getCreateBoardCount(userId) >= 10) {
 			throw new IllegalArgumentException("보드의 최대 생성 제한이 넘습니다.");
 		}
 		User user = findUser(userId);
@@ -89,6 +89,7 @@ public class BoardService {
 
 		for (UserDto userDto : userlist) {
 			User user = userRepository.findByEmail(userDto.getEmail());
+			if(user == null) throw new IllegalArgumentException("없는 사용자입니다.");
 			BoardUser boardUser = new BoardUser(board, user);
 
 			boardUserRepository.save(boardUser);
@@ -109,8 +110,8 @@ public class BoardService {
 		return userId.equals(boardUserId);
 	}
 
-	private int getBoardUserSize(Long userId) {
-		List<BoardUser> boardUserList = boardUserRepository.findAllByUserId(userId);
-		return boardUserList.size();
+	private int getCreateBoardCount(Long userId) {
+		List<Board> createBoardlist = boardRepository.findAllByCreateUserId(userId);
+		return createBoardlist.size();
 	}
 }

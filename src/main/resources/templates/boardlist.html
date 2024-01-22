@@ -25,7 +25,7 @@
               <span class="board-color" th:text="${board.boardColor}"></span>
             </div>
             <div class="btn-wrap">
-              <button id="board-invite-button" class="btn">초대</button><br/>
+              <button id="board-invite-button" class="btn" th:attr="data-row-id='boardRow-' + ${board.id}">초대</button><br/>
               <button id="board-modify-button" class="btn" th:attr="data-row-id='boardRow-' + ${board.id}">수정</button><br/>
               <button id="board-delete-button" class="btn" th:attr="data-row-id='boardRow-' + ${board.id}">삭제</button>
             </div>
@@ -94,6 +94,21 @@
     </form>
   </div>
 </div>
+
+<!-- 유저 초대 modal -->
+<div id="inviteModal" class="custom-modal">
+  <span class="close" id="closeInviteModal">&times;</span>
+  <h2>이메일 검색 및 유저 초대</h2>
+  <form id="inviteForm">
+    <label for="emailSearch">이메일:</label>
+    <input type="text" id="emailSearch" name="emailSearch" required>
+    <button type="button" class="invite-btn" id="searchInviteBtn">추가</button>
+    <br/>
+    <ul id="userInviteList"></ul>
+    <button type="button" class="invite-btn" id="sendInviteBtn">초대</button>
+  </form>
+</div>
+
 </body>
 <script th:inline="javascript">
   /*<![CDATA[*/
@@ -237,6 +252,92 @@
           })
         }
       });
+    }
+
+    // 초대
+    const inviteModal = document.getElementById('inviteModal');
+    const closeInviteModal = document.getElementById('closeInviteModal');
+    const searchInviteBtn = document.getElementById('searchInviteBtn');
+    const sendInviteBtn = document.getElementById('sendInviteBtn');
+    const userInviteList = document.getElementById('userInviteList');
+
+    let selectedBoardIdForInvite = null;
+
+    for (let i = 0; i < rows.length; i++) {
+      const inviteButton = rows[i].querySelector('#board-invite-button');
+
+      inviteButton.addEventListener('click', function () {
+        selectedBoardIdForInvite = inviteButton.getAttribute('data-row-id').split('-')[1];
+        inviteModal.style.display = 'block';
+        userInviteList.innerHTML = '';
+      });
+    }
+
+    searchInviteBtn.addEventListener('click', function () {
+      let email = document.getElementById("emailSearch").value;
+
+      if (validateEmail(email.trim())) {
+        addUserToInviteList(email.trim());
+        document.getElementById("emailSearch").value = '';
+      } else {
+        alert("유효하지 않은 이메일형식입니다.");
+      }
+    });
+
+    sendInviteBtn.addEventListener('click', function () {
+      // TODO: 선택된 유저를 초대하는 로직을 여기에 추가
+      let inviteUserList = document.getElementsByClassName("invite-email")
+      let userList = [];
+
+      for (let i = 0; i < inviteUserList.length; i++) {
+        const email = inviteUserList[i].textContent;
+        const userDto = { email: email };
+        userList.push(userDto);
+      }
+
+      fetch('/api/boards/' + selectedBoardIdForInvite + '/invite', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userList)
+      })
+              .then(data => {
+                if(data.status === 200){
+                  alert("초대되었습니다.")
+                  inviteModal.style.display = 'none';
+                } else {
+                  alert("이메일을 확인해주세요.")
+                }
+              })
+    });
+
+    closeInviteModal.addEventListener('click', function () {
+      inviteModal.style.display = 'none';
+    });
+
+    function addUserToInviteList(email) {
+      if (email) {
+        const li = document.createElement('li');
+        let span = document.createElement('span');
+        span.textContent = email;
+        span.className = "invite-email";
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'X';
+        deleteBtn.className = 'invite-delete-btn';
+        deleteBtn.addEventListener('click', function () {
+          userInviteList.removeChild(li);
+        });
+        li.appendChild(span);
+        li.appendChild(deleteBtn);
+        userInviteList.appendChild(li);
+      }
+    }
+
+    function validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
     }
   });
 
