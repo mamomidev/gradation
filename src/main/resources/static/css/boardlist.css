@@ -112,7 +112,6 @@ button {
     z-index: 5;
     border-radius: 6px;
     height: 150px;
-    cursor: pointer;
 }
 .image-container {
     display: flex;
@@ -146,6 +145,7 @@ button {
     gap: 8px;
     position: relative;
     z-index: 8;
+    cursor: pointer;
 }
 .title-1 {
     align-self: stretch;

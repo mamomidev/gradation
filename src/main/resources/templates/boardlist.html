@@ -19,7 +19,7 @@
         <div th:each="board : ${boardList}" class="row">
           <div class="article">
             <div class="image-container"><div class="image"></div></div>
-            <div class="frame">
+            <div class="frame" th:attr="data-row-id='boardRow-' + ${board.id}">
               <span class="title-1" th:text="${board.boardName}"></span>
               <span class="subtitle" th:text="${board.boardDescription}"></span>
               <span class="board-color" th:text="${board.boardColor}"></span>
@@ -340,10 +340,10 @@
       return emailRegex.test(email);
     }
 
-    let articles = document.getElementsByClassName("article");
-    Array.from(articles).forEach(article => {
-      article.addEventListener('click', function () {
-        const boardId = article.querySelector('#board-invite-button').getAttribute('data-row-id').split('-')[1];
+    let frame = document.getElementsByClassName("frame");
+    Array.from(frame).forEach((frame) => {
+      frame.addEventListener('click', function () {
+        const boardId = frame.getAttribute('data-row-id').split('-')[1];
 
         fetch('/api/user/boards/' + boardId + '/columns', {
           method: 'GET'
