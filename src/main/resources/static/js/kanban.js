@@ -63,15 +63,36 @@ document.addEventListener('DOMContentLoaded', function () {
         boardGrid.synchronize();
         // 순서 바뀔시에 순서 저장
 
-        let index = 1;
-        document.querySelector(".board.muuri").childNodes.forEach( (el) => {
-            if(el.nodeName != "#text") {
-                console.log(el);
-                // fetch
-                //
+        let sort_index = 1;
+        const columnList = document.querySelector(".board.muuri").childNodes;
 
-                index ++; // 순서
+        (async () => {
+            for (let column of columnList) {
+                if (column.nodeName != "#text") {
+                    console.log(column, sort_index);
+                    await orderFetch(column, sort_index);
+                    sort_index++;
+                }
             }
-        });
+        })();
+
+        function orderFetch(el, sort_index) {
+            if(el.nodeName != "#text") {
+                const columnId = el.getAttribute('id');
+                fetch('/api/user/columns/' + columnId + "/order", {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "columnsOrder":sort_index
+                    }),
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+
     })
 });

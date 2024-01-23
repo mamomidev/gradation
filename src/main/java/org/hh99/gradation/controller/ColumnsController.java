@@ -36,6 +36,7 @@ public class ColumnsController {
     }
 
     @PatchMapping("/columns/{columnsId}/order")
+    @ResponseBody
     public void modifyColumnsOrder(@PathVariable Long columnsId, @RequestBody ColumnsDto columnsDto) {
         columnsService.modifyColumnsOrder(columnsId, columnsDto);
     }

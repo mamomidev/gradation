@@ -93,10 +93,8 @@
 
 
     function editColumn(button) {
-        const columnDiv = button.closest('.todo');
-        const headerElement = columnDiv.querySelector('.board-column-header');
-        const columnId = headerElement.getAttribute('id');
-        const newColumnName = prompt('새로운 컬럼 이름을 입력하세요:', headerElement.textContent);
+        const columnId = button.parentNode.getAttribute("id");
+        const newColumnName = prompt('새로운 컬럼 이름을 입력하세요:', button.parentNode.childNodes[1].textContent);
 
         if (columnId !== null) {
             const data = {
@@ -111,7 +109,7 @@
                 body: JSON.stringify(data),
             })
             .then(() => {
-                headerElement.textContent = newColumnName;
+                button.parentNode.childNodes[1].textContent = newColumnName;
             })
             .catch(error => {
                 console.error('Error:', error);
