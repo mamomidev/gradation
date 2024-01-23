@@ -22,13 +22,14 @@
     </h2>
 
     <div class="board">
-        <div class="board-column todo" th:each="column : ${columns}" data-th-id="${column.board.id}">
+        <div class="board-column todo" th:each="column, index : ${columns}" data-th-id="${column.id}" th:attrprepend="sort=${index.count}">
             <div class="board-column-header" data-th-id="${column.id}" th:text="${column.columnsName}">
 
             </div>
 
             <button name="editButton" onclick="editColumn(this)">수정</button>
             <button name="deleteButton" onclick="deleteColumn(this)">삭제</button>
+            <button name="cardAddButton" onclick="cardAdd(this)">카드추가</button>
 
             <div class="board-column-content">
                 <div class="board-item" th:each="card : ${column.cardList}">
@@ -43,6 +44,11 @@
 <script th:inline="javascript">
     let columnNum = 1;
     const boardId = [[${boardId}]];
+
+    function cardAdd(){
+
+    }
+
     function addColumn(){
         const newColumnName = prompt('등록할 컬럼 이름을 입력하세요.');
         document.querySelector(".board").insertAdjacentHTML('beforeend', `
@@ -52,10 +58,8 @@
                 </div>
                 <button name="editButton" onclick="editColumn(this)">수정</button>
                 <button name="deleteButton" onclick="deleteColumn(this)">삭제</button>
+                <button name="cardAddButton" onclick="cardAdd(this)">카드추가</button>
                 <div class="board-column-content">
-                    <div class="board-item">
-                        <div class="board-item-content"></div>
-                    </div>
                 </div>
             </div>
         `);
@@ -80,6 +84,7 @@
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
+            location.reload();
         })
         .catch(error => {
             console.error('Error:', error);
@@ -90,7 +95,6 @@
     function editColumn(button) {
         const columnDiv = button.closest('.todo');
         const headerElement = columnDiv.querySelector('.board-column-header');
-        const boardId = columnDiv.getAttribute('id');
         const columnId = headerElement.getAttribute('id');
         const newColumnName = prompt('새로운 컬럼 이름을 입력하세요:', headerElement.textContent);
 
@@ -172,6 +176,7 @@
                 .on('dragEnd', function (item) {
                     if (--dragCounter < 1) {
                         docElem.classList.remove('dragging');
+
                     }
                 })
                 .on('dragReleaseEnd', function (item) {
@@ -180,6 +185,7 @@
                     columnGrids.forEach(function (muuri) {
                         muuri.refreshItems();
                     });
+
                 })
                 .on('layoutStart', function () {
                     boardGrid.refreshItems().layout();
