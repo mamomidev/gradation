@@ -47,7 +47,7 @@ public class ColumnsService {
     }
 
     public List<ColumnsDto> getAllColumnsByBoardId(Long boardId) {
-        List<ColumnsDto> columnsDtoList = columnsRepository.findByBoardId(boardId).stream().map(ColumnsDto::new).toList();
+        List<ColumnsDto> columnsDtoList = columnsRepository.findByBoardIdOrderByColumnsOrder(boardId).stream().map(ColumnsDto::new).toList();
         columnsDtoList.forEach(e -> {
             List<CardDto> cardDtoList = cardRepository.findAllByColumnsId(e.getId()).stream().map(CardDto::new).toList();
             e.setCardList(cardDtoList);
