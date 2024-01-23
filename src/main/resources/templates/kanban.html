@@ -93,23 +93,50 @@
                     }
                 })
                 .then(result => {
+                    if (!result) {
+                        // 리다이렉션이 발생한 경우에는 여기까지 오지 않을 것이므로 주의
+                        console.error('Invalid response:', result);
+                        return;
+                    }
                     console.log(result);
                     headerElement.textContent = newColumnName;
-
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
+
         }
     }
 
     function deleteColumn(button) {
-        const columnId = button.getAttribute('data-column-id');
+        const columnDiv = button.closest('.todo');
+        const headerElement = columnDiv.querySelector('.board-column-header');
+        const boardId = columnDiv.getAttribute('id');
+        const columnId = headerElement.getAttribute('id');
         // 여기에서 열 삭제 로직 구현
-        const confirmDelete = confirm('Are you sure you want to delete this column?');
+        const confirmDelete = confirm('삭제하시겠습니까?');
         if (confirmDelete) {
-            alert('Column ' + columnId + ' will be deleted');
-            // 여기에서 열 삭제 API 호출 또는 기타 로직 수행
+
+            fetch('/api/user/boards/' + boardId + '/columns/' + columnId, {
+                method : 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+
+                },
+
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`)
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('삭제완료');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
     }
 
