@@ -20,6 +20,7 @@ public class ColumnsController {
     public String getAllColumnsByBoardId(@PathVariable Long boardId, Model model) {
         List<ColumnsDto> columnsDtoList = columnsService.getAllColumnsByBoardId(boardId);
         model.addAttribute("columns", columnsDtoList);
+        model.addAttribute("boardId", boardId);
         return "kanban";
     }
 
@@ -30,9 +31,8 @@ public class ColumnsController {
     }
 
     @PatchMapping("/boards/{boardId}/columns/{columnsId}")
-    public String modifyColumns(@PathVariable Long boardId, @PathVariable Long columnsId, @RequestBody ColumnsDto columnsDto) {
+    public void modifyColumns(@PathVariable Long boardId, @PathVariable Long columnsId, @RequestBody ColumnsDto columnsDto) {
         columnsService.modifyColumns(columnsId, columnsDto);
-        return "redirect:/api/user/boards/{boardId}/columns";
     }
 
     @PatchMapping("/columns/{columnsId}/order")

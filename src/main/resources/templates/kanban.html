@@ -27,12 +27,12 @@
 
             </div>
 
-            <button name="editButton" onclick="editColumn(this)">Edit</button>
-            <button name="deleteButton" onclick="deleteColumn(this)">Delete</button>
+            <button name="editButton" onclick="editColumn(this)">수정</button>
+            <button name="deleteButton" onclick="deleteColumn(this)">삭제</button>
 
             <div class="board-column-content">
                 <div class="board-item" th:each="card : ${column.cardList}">
-                    <div class="board-item-content" th:text="${card.cardName}">1</div>
+                    <div class="board-item-content" th:text="${card.cardName}">카드이름</div>
                 </div>
             </div>
         </div>
@@ -42,10 +42,13 @@
 </body>
 <script th:inline="javascript">
     let columnNum = 1;
+    const boardId = [[${boardId}]];
     function addColumn(){
+        const newColumnName = prompt('등록할 컬럼 이름을 입력하세요.');
         document.querySelector(".board").insertAdjacentHTML('beforeend', `
             <div class="board-column todo">
                 <div class="board-column-header">
+                ${newColumnName}
                 </div>
                 <button name="editButton" onclick="editColumn(this)">수정</button>
                 <button name="deleteButton" onclick="deleteColumn(this)">삭제</button>
@@ -56,8 +59,31 @@
                 </div>
             </div>
         `);
+
         columnNum ++;
         kanbanRelaod();
+
+        fetch('/api/user/boards/'+ boardId + '/columns', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "board":{
+                    "id":boardId
+                },
+                "columnsName":newColumnName,
+                "columnsOrder":1
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     }
 
 
@@ -80,31 +106,12 @@
                 },
                 body: JSON.stringify(data),
             })
-                .then(response => {
-                    if (response.redirected) {
-                        // 리다이렉션이 발생한 경우
-                        window.location.href = response.url;  // 리다이렉션 수행
-                    } else if (!response.ok) {
-                        // 리다이렉션이 발생하지 않고, 응답이 실패한 경우
-                        throw new Error('Network response was not ok');
-                    } else {
-                        // 리다이렉션이 발생하지 않고, 응답이 성공한 경우
-                        return response.json();
-                    }
-                })
-                .then(result => {
-                    if (!result) {
-                        // 리다이렉션이 발생한 경우에는 여기까지 오지 않을 것이므로 주의
-                        console.error('Invalid response:', result);
-                        return;
-                    }
-                    console.log(result);
-                    headerElement.textContent = newColumnName;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-
+            .then(() => {
+                headerElement.textContent = newColumnName;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
     }
 
