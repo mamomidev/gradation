@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     boardGrid.on('dragReleaseEnd', function (item) {
-        console.log(item);
         boardGrid.synchronize();
         // 순서 바뀔시에 순서 저장
 
@@ -69,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function () {
         (async () => {
             for (let column of columnList) {
                 if (column.nodeName != "#text") {
-                    console.log(column, sort_index);
                     await orderFetch(column, sort_index);
                     sort_index++;
                 }

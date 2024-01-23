@@ -597,7 +597,7 @@ button {
     left: 0;
     padding: 20px 20px 20px 20px;
     background: #ffffff;
-    z-index: 42;
+    z-index: 0;
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.12);
 }
 .trello {
@@ -882,4 +882,10 @@ button {
     font-weight: 600;
     margin-bottom: 20px;
     cursor: pointer;
+}
+#logout{
+    cursor:pointer;
+}
+#logout:hover{
+    color: #73c991;
 }
