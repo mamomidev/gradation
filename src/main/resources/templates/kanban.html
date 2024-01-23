@@ -29,7 +29,7 @@
 
             <button name="editButton" onclick="editColumn(this)">수정</button>
             <button name="deleteButton" onclick="deleteColumn(this)">삭제</button>
-            <button name="cardAddButton" onclick="openAddCardModal(this)">카드추가</button>
+            <button name="cardAddButton" onclick="openAddCardModal(this)">카드</button>
 
             <div class="board-column-content">
                 <div class="board-item" th:each="card : ${column.cardList}">
@@ -63,7 +63,7 @@
             <label for="worker">Worker:</label>
             <input type="text" id="worker" name="worker">
 
-            <button type="button" onclick="addCard()">Add Card</button>
+            <button type="button" onclick="cardAdd()">Add Card</button>
         </form>
     </div>
 </div>
@@ -73,7 +73,34 @@
     const boardId = [[${boardId}]];
 
     function cardAdd(){
+        const cardName = document.getElementById('cardName').value;
+        const cardDescription = document.getElementById('cardDescription').value;
+        const cardColor = document.getElementById('cardColor').value;
+        const fileInput = document.getElementById('file');
+        const file = fileInput.files[0];
+        const deadline = document.getElementById('deadline').value;
+        const worker = document.getElementById('worker').value;
 
+        // Validate 검사
+
+        const formData = new FormData();
+        formData.append('cardName', cardName);
+        formData.append('cardDescription', cardDescription);
+        formData.append('cardColor', cardColor);
+        formData.append('file', file);
+        formData.append('deadline', deadline);
+        formData.append('worker', worker);
+        //TODO
+        //order, column id 넣기
+
+        fetch('/api/cards', {
+            method: 'POST',
+            body: formData,
+        })
+            .then(data => {
+                closeAddCardModal();
+                location.reload();
+            })
     }
 
     function addColumn(){
@@ -87,7 +114,7 @@
                 </div>
                 <button name="editButton" onclick="editColumn(this)">수정</button>
                 <button name="deleteButton" onclick="deleteColumn(this)">삭제</button>
-                <button name="cardAddButton" onclick="openAddCardModal(this)">카드추가</button>
+                <button name="cardAddButton" onclick="openAddCardModal(this)">카드</button>
                 <div class="board-column-content">
                 </div>
             </div>
