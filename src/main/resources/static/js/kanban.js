@@ -43,9 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .on('layoutStart', function () {
                 boardGrid.refreshItems().layout();
             });
-
         columnGrids.push(muuri);
-
     });
 
     boardGrid = new Muuri(board, {
@@ -60,4 +58,20 @@ document.addEventListener('DOMContentLoaded', function () {
         dragReleaseEasing: 'ease'
     });
 
+    boardGrid.on('dragReleaseEnd', function (item) {
+        console.log(item);
+        boardGrid.synchronize();
+        // 순서 바뀔시에 순서 저장
+
+        let index = 1;
+        document.querySelector(".board.muuri").childNodes.forEach( (el) => {
+            if(el.nodeName != "#text") {
+                console.log(el);
+                // fetch
+                //
+
+                index ++; // 순서
+            }
+        });
+    })
 });
