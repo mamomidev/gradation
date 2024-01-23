@@ -118,37 +118,29 @@
     function deleteColumn(button) {
         const columnDiv = button.closest('.todo');
         const headerElement = columnDiv.querySelector('.board-column-header');
-        const boardId = columnDiv.getAttribute('id');
         const columnId = headerElement.getAttribute('id');
-        // 여기에서 열 삭제 로직 구현
         const confirmDelete = confirm('삭제하시겠습니까?');
         if (confirmDelete) {
-
-            fetch('/api/user/boards/' + boardId + '/columns/' + columnId, {
+            fetch('/api/user/boards/columns/' + columnId, {
                 method : 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-
                 },
-
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`)
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    alert('삭제완료');
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`)
+                }
+                alert('삭제완료');
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
     }
 
     function kanbanRelaod() {
-
         var docElem = document.documentElement;
         var kanban = document.querySelector('.kanban-demo');
         var board = kanban.querySelector('.board');
