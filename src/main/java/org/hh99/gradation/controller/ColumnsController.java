@@ -41,7 +41,7 @@ public class ColumnsController {
     }
 
     @DeleteMapping("/boards/{boardId}/columns/{columnsId}")
-    public String deleteColumns(@PathVariable Long columnsId) {
+    public String deleteColumns(@PathVariable Long boardId,@PathVariable Long columnsId) {
         columnsService.deleteColumns(columnsId);
         return "redirect:/api/user/boards/{boardId}/columns";
     }
