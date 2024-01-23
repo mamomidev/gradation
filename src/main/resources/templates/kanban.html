@@ -29,11 +29,11 @@
 
             <button name="editButton" onclick="editColumn(this)">수정</button>
             <button name="deleteButton" onclick="deleteColumn(this)">삭제</button>
-            <button name="cardAddButton" onclick="openAddCardModal(this)">카드</button>
+            <button name="cardAddButton" th:onclick="openAddCardModal([[${column.id}]])">카드</button>
 
             <div class="board-column-content">
-                <div class="board-item" th:each="card : ${column.cardList}">
-                    <div class="board-item-content" th:text="${card.cardName}">카드이름</div>
+                <div class="board-item card-info" th:each="card : ${column.cardList}">
+                    <div class="board-item-content card-info" th:text="${card.cardName}" data-th-id="${card.id}">카드이름</div>
                 </div>
             </div>
         </div>
@@ -43,27 +43,29 @@
 <div id="addCardModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeAddCardModal()">&times;</span>
-        <h2>Add Card</h2>
+        <h2>카드 추가</h2>
         <form id="addCardForm">
-            <label for="cardName">Card Name:</label>
+            <label for="cardName">카드 이름:</label>
             <input type="text" id="cardName" name="cardName" required>
 
-            <label for="cardDescription">Card Description:</label>
+            <label for="cardDescription">카드 설명:</label>
             <textarea id="cardDescription" name="cardDescription"></textarea>
 
-            <label for="cardColor">Card Color:</label>
+            <label for="cardColor">카드 색상:</label>
             <input type="color" id="cardColor" name="cardColor">
 
-            <label for="file">File:</label>
+            <label for="file">이미지:</label>
             <input type="file" id="file" name="file">
 
-            <label for="deadline">Deadline:</label>
+            <label for="deadline">마감일:</label>
             <input type="date" id="deadline" name="deadline">
 
-            <label for="worker">Worker:</label>
+            <label for="worker">작업자:</label>
             <input type="text" id="worker" name="worker">
 
-            <button type="button" onclick="cardAdd()">Add Card</button>
+            <input type="hidden" id="addCardColumn">
+
+            <button type="button" onclick="cardAdd()">카드 추가</button>
         </form>
     </div>
 </div>
@@ -73,34 +75,30 @@
     const boardId = [[${boardId}]];
 
     function cardAdd(){
-        const cardName = document.getElementById('cardName').value;
-        const cardDescription = document.getElementById('cardDescription').value;
-        const cardColor = document.getElementById('cardColor').value;
-        const fileInput = document.getElementById('file');
-        const file = fileInput.files[0];
-        const deadline = document.getElementById('deadline').value;
-        const worker = document.getElementById('worker').value;
-
-        // Validate 검사
-
-        const formData = new FormData();
-        formData.append('cardName', cardName);
-        formData.append('cardDescription', cardDescription);
-        formData.append('cardColor', cardColor);
-        formData.append('file', file);
-        formData.append('deadline', deadline);
-        formData.append('worker', worker);
-        //TODO
-        //order, column id 넣기
-
+        const sendData = {
+            "cardName":document.getElementById('cardName').value,
+            "cardDescription":document.getElementById('cardDescription').value,
+            "cardColor":document.getElementById('cardColor').value,
+            "deadline":document.getElementById('deadline').value,
+            "worker":document.getElementById('worker').value,
+            "columns":{
+                "id":document.getElementById('addCardColumn').value
+            },
+            "cardOrder":99
+        }
         fetch('/api/cards', {
             method: 'POST',
-            body: formData,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(sendData),
         })
-            .then(data => {
-                closeAddCardModal();
-                location.reload();
-            })
+        .then(data => {
+            closeAddCardModal();
+        })
+
+        // file이 있으면 따로 전달
+
     }
 
     function addColumn(){
@@ -267,7 +265,8 @@
     const addCardModal = document.getElementById('addCardModal');
     const addCardForm = document.getElementById('addCardForm');
 
-    function openAddCardModal() {
+    function openAddCardModal(columnId) {
+        document.querySelector("#addCardColumn").value = columnId;
         addCardModal.style.display = 'block';
     }
 
@@ -275,5 +274,15 @@
         addCardForm.reset();
         addCardModal.style.display = 'none';
     }
+
+    const cardInfoList = document.querySelectorAll(".card-info");
+    [].forEach.call(cardInfoList, (el) => {
+        el.addEventListener("click", (el) => {
+            const url = "/cards/"+el.target.getAttribute("id");
+            const name = "popup test";
+            const option = "width = 1440, height = 765, top = 100, left = 200, location = no"
+            window.open(url, name, option);
+        });
+    });
 </script>
 </html>

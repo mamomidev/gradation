@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,17 +46,20 @@ public class CardController {
 	}
 
 	@PatchMapping("/api/cards/{cardId}")
-	public ResponseEntity<CardDto> updateCard(@PathVariable Long cardId, @RequestBody CardDto cardDto) {
-		return cardService.updateCard(cardId, cardDto);
+	@ResponseBody
+	public void updateCard(@PathVariable Long cardId, @RequestBody CardDto cardDto) {
+		cardService.updateCard(cardId, cardDto);
 	}
 
 	@DeleteMapping("/api/cards/{cardId}")
-	public ResponseEntity<String> deleteCard(@PathVariable Long cardId) {
-		return cardService.deleteCard(cardId);
+	@ResponseBody
+	public void deleteCard(@PathVariable Long cardId) {
+		cardService.deleteCard(cardId);
 	}
 
 	@PatchMapping("/api/cards/{cardId}/move")
-	public ResponseEntity<String> moveCard(@PathVariable Long cardId, @RequestBody CardDto cardDto) {
-		return cardService.moveCard(cardId, cardDto);
+	@ResponseBody
+	public void moveCard(@PathVariable Long cardId, @RequestBody CardDto cardDto) {
+		cardService.moveCard(cardId, cardDto);
 	}
 }

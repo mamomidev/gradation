@@ -111,6 +111,7 @@
                     </div>
                 </div>`)
             document.querySelector("#createCommentContents").value = "";
+            location.reload();
         });
     });
 
@@ -124,6 +125,7 @@
                     throw new Error(res.statusText);
                 }
                 el.target.parentNode.parentNode.parentNode.remove();
+                location.reload();
             });
         });
     });
@@ -143,7 +145,8 @@
                     body: JSON.stringify({
                         "contents":$(el.currentTarget).parent().parent().children(".contents").children().val()
                     }),
-                }).then(async (res) => {
+                }).then((res) => {
+                    console.log(res);
                     if (res.status !== 200) {
                         throw new Error(res.statusText);
                     }

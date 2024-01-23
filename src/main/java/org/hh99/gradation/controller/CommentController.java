@@ -30,14 +30,13 @@ public class CommentController {
 	}
 
 	@PostMapping("/cards/comments")
-	@ResponseBody
 	public ResponseEntity<CommentDto> createComments(@RequestBody CommentDto commentDto) {
 		return commentService.createComments(commentDto);
 	}
 
 	@DeleteMapping("/cards/comments/{commentId}")
-	public ResponseEntity deleteComments(@PathVariable Long commentId) {
-		return commentService.deleteComments(commentId);
+	public void deleteComments(@PathVariable Long commentId) {
+		commentService.deleteComments(commentId);
 	}
 
 	@PatchMapping("/cards/comments/{commentId}")
