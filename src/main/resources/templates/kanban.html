@@ -29,7 +29,7 @@
 
             <button name="editButton" onclick="editColumn(this)">수정</button>
             <button name="deleteButton" onclick="deleteColumn(this)">삭제</button>
-            <button name="cardAddButton" onclick="cardAdd(this)">카드추가</button>
+            <button name="cardAddButton" onclick="openAddCardModal(this)">카드추가</button>
 
             <div class="board-column-content">
                 <div class="board-item" th:each="card : ${column.cardList}">
@@ -40,6 +40,33 @@
     </div>
 
 </section>
+<div id="addCardModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeAddCardModal()">&times;</span>
+        <h2>Add Card</h2>
+        <form id="addCardForm">
+            <label for="cardName">Card Name:</label>
+            <input type="text" id="cardName" name="cardName" required>
+
+            <label for="cardDescription">Card Description:</label>
+            <textarea id="cardDescription" name="cardDescription"></textarea>
+
+            <label for="cardColor">Card Color:</label>
+            <input type="color" id="cardColor" name="cardColor">
+
+            <label for="file">File:</label>
+            <input type="file" id="file" name="file">
+
+            <label for="deadline">Deadline:</label>
+            <input type="date" id="deadline" name="deadline">
+
+            <label for="worker">Worker:</label>
+            <input type="text" id="worker" name="worker">
+
+            <button type="button" onclick="addCard()">Add Card</button>
+        </form>
+    </div>
+</div>
 </body>
 <script th:inline="javascript">
     let columnNum = 1;
@@ -51,6 +78,8 @@
 
     function addColumn(){
         const newColumnName = prompt('등록할 컬럼 이름을 입력하세요.');
+        if(newColumnName == null) return;
+
         document.querySelector(".board").insertAdjacentHTML('beforeend', `
             <div class="board-column todo">
                 <div class="board-column-header">
@@ -58,7 +87,7 @@
                 </div>
                 <button name="editButton" onclick="editColumn(this)">수정</button>
                 <button name="deleteButton" onclick="deleteColumn(this)">삭제</button>
-                <button name="cardAddButton" onclick="cardAdd(this)">카드추가</button>
+                <button name="cardAddButton" onclick="openAddCardModal(this)">카드추가</button>
                 <div class="board-column-content">
                 </div>
             </div>
@@ -205,6 +234,19 @@
             dragReleaseEasing: 'ease'
         });
 
+    }
+
+    // Add Card Modal
+    const addCardModal = document.getElementById('addCardModal');
+    const addCardForm = document.getElementById('addCardForm');
+
+    function openAddCardModal() {
+        addCardModal.style.display = 'block';
+    }
+
+    function closeAddCardModal() {
+        addCardForm.reset();
+        addCardModal.style.display = 'none';
     }
 </script>
 </html>
