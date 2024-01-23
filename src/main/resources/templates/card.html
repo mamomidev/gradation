@@ -146,7 +146,6 @@
                         "contents":$(el.currentTarget).parent().parent().children(".contents").children().val()
                     }),
                 }).then((res) => {
-                    console.log(res);
                     if (res.status !== 200) {
                         throw new Error(res.statusText);
                     }
