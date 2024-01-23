@@ -40,8 +40,9 @@ public class ColumnsController {
         columnsService.modifyColumnsOrder(columnsId, columnsDto);
     }
 
-    @DeleteMapping("/columns/{columnsId}")
-    public void deleteColumns(@PathVariable Long columnsId) {
+    @DeleteMapping("/boards/{boardId}/columns/{columnsId}")
+    public String deleteColumns(@PathVariable Long columnsId) {
         columnsService.deleteColumns(columnsId);
+        return "redirect:/api/user/boards/{boardId}/columns";
     }
 }
