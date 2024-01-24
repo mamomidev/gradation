@@ -120,7 +120,13 @@
             method: 'POST',
             body: cardData,
         })
-        .then(() => closeAddCardModal());
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            closeAddCardModal()
+            location.reload()
+        })
     }
 
     function addColumn(){
