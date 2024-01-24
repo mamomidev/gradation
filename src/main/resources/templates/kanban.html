@@ -79,7 +79,7 @@
             <input type="text" id="modifyCardName" name="cardName" required>
 
             <label for="cardDescription">카드 설명:</label>
-            <textarea id="modifyCDescription" name="cardDescription"></textarea>
+            <textarea id="modifyCardDescription" name="cardDescription"></textarea>
 
             <label for="cardColor">카드 색상:</label>
             <input type="color" id="modifyCardColor" name="cardColor">
@@ -315,7 +315,6 @@
 
     const modfiyCardModal = document.getElementById('modifyCardModal');
     const modifyCardForm = document.getElementById('modifyCardForm');
-
 
     function closeModifyCardModal() {
         modifyCardForm.reset();
