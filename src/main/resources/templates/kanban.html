@@ -23,20 +23,16 @@
 
     <div class="board">
         <div class="board-column todo" th:each="column, index : ${columns}" data-th-id="${column.id}" th:attrprepend="sort=${index.count}">
-            <div class="board-column-header" data-th-id="${column.id}" th:text="${column.columnsName}">
-
-            </div>
-
+            <div class="board-column-header" data-th-id="${column.id}" th:text="${column.columnsName}"/>
             <button name="editButton" onclick="editColumn(this)">수정</button>
             <button name="deleteButton" onclick="deleteColumn(this)">삭제</button>
             <button name="cardAddButton" th:onclick="openAddCardModal([[${column.id}]])">카드</button>
-
             <div class="board-column-content">
-                <div class="board-item card-info" th:each="card : ${column.cardList}">
-                    <div class="board-item-content card-info" data-th-id="${card.id}">
-                        [[${card.cardName}]]
-                        <button class="card-btn" name="editButton" onclick="editColumn(this)">수정</button>
-                        <button class="card-btn" name="deleteButton" onclick="deleteColumn(this)">삭제</button>
+                <div class="board-item" th:each="card : ${column.cardList}">
+                    <div class="board-item-content">
+                        <span class="card-info" data-th-id="${card.id}">[[${card.cardName}]]</span>
+                        <button class="card-btn" th:onclick="openModifyCardModal([[${card.id}]])">수정</button>
+                        <button class="card-btn" th:onclick="deleteCard([[${card.id}]])">삭제</button>
                     </div>
                 </div>
             </div>
@@ -73,36 +69,58 @@
         </form>
     </div>
 </div>
+
+<div id="modifyCardModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModifyCardModal()">&times;</span>
+        <h2>카드 수정</h2>
+        <form id="modifyCardForm">
+            <label for="cardName">카드 이름:</label>
+            <input type="text" id="modifyCardName" name="cardName" required>
+
+            <label for="cardDescription">카드 설명:</label>
+            <textarea id="modifyCDescription" name="cardDescription"></textarea>
+
+            <label for="cardColor">카드 색상:</label>
+            <input type="color" id="modifyCardColor" name="cardColor">
+
+            <label for="file">이미지:</label>
+            <input type="file" id="modifyFile" name="file">
+
+            <label for="deadline">마감일:</label>
+            <input type="date" id="modifyDeadline" name="deadline">
+
+            <label for="worker">작업자:</label>
+            <input type="text" id="modifyWorker" name="worker">
+
+            <input type="hidden" id="modifyCardId">
+
+            <button type="button" onclick="cardModify()">카드 수정</button>
+        </form>
+    </div>
+</div>
 </body>
 <script th:inline="javascript">
     let columnNum = 1;
     const boardId = [[${boardId}]];
 
     function cardAdd(){
-        const sendData = {
-            "cardName":document.getElementById('cardName').value,
-            "cardDescription":document.getElementById('cardDescription').value,
-            "cardColor":document.getElementById('cardColor').value,
-            "deadline":document.getElementById('deadline').value,
-            "worker":document.getElementById('worker').value,
-            "columns":{
-                "id":document.getElementById('addCardColumn').value
-            },
-            "cardOrder":99
-        }
+        let cardData = new FormData();
+        cardData.append("cardName", document.getElementById('cardName').value);
+        cardData.append("cardDescription", document.getElementById('cardDescription').value);
+        cardData.append("cardColor", document.getElementById('cardColor').value);
+        cardData.append("deadline", document.getElementById('deadline').value);
+        cardData.append("worker", document.getElementById('worker').value);
+        cardData.append("columns", document.getElementById('addCardColumn').value);
+        cardData.append("cardOrder", "99");
+        cardData.append("file", document.getElementById('file').files[0]);
+        console.log(cardData);
+
         fetch('/api/cards', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(sendData),
+            body: cardData,
         })
-        .then(data => {
-            closeAddCardModal();
-        })
-
-        // file이 있으면 따로 전달
-
+        .then(() => closeAddCardModal());
     }
 
     function addColumn(){
@@ -288,5 +306,62 @@
             window.open(url, name, option);
         });
     });
+
+    const modfiyCardModal = document.getElementById('modifyCardModal');
+    const modifyCardForm = document.getElementById('modifyCardForm');
+
+
+    function closeModifyCardModal() {
+        modifyCardForm.reset();
+        modfiyCardModal.style.display = 'none';
+    }
+
+    function openModifyCardModal(cardId){
+        // 패치로 조회 하고
+        fetch('/api/cards/' + cardId, {
+            method : 'GET'
+        })
+        .then(async response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`)
+            }
+            let json = await response.json();
+            document.querySelector("#modifyCardName").value = json.cardName;
+            document.querySelector("#modifyCardDescription").value = json.cardDescription;
+            document.querySelector("#modifyCardColor").value = json.cardColor;
+            document.querySelector("#modifyDeadline").value = json.deadline;
+            document.querySelector("#modifyWorker").value = json.worker;
+            document.querySelector("#modifyCardId").value = cardId;
+            modfiyCardModal.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+        // modal 넣어 주고
+
+        // 가져와야하는
+    }
+
+    function deleteCard(cardId){
+        const confirmDelete = confirm('카드 삭제하시겠습니까?');
+        if (confirmDelete) {
+            fetch('/api/cards/' + cardId, {
+                method : 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`)
+                }
+                alert('카드 삭제완료');
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    }
 </script>
 </html>

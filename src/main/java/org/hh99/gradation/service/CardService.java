@@ -1,6 +1,7 @@
 package org.hh99.gradation.service;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -10,6 +11,7 @@ import org.hh99.gradation.domain.entity.Card;
 import org.hh99.gradation.jwt.JwtUtil;
 import org.hh99.gradation.repository.CardRepository;
 import org.hh99.gradation.repository.ColumnsRepository;
+import org.hh99.gradation.repository.CommentRepository;
 import org.hh99.gradation.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -32,6 +34,7 @@ public class CardService {
 	private final UserRepository userRepository;
 	private final CardRepository cardRepository;
 	private final ColumnsRepository columnsRepository;
+	private final CommentRepository commentRepository;
 	private final JwtUtil jwtUtil;
 
 
@@ -55,7 +58,11 @@ public class CardService {
 		columnsRepository.findById(cardDto.getColumns().getId()).orElseThrow(EntityNotFoundException::new);
 
 		String awsUrl = "";
-		if(file != null) awsUrl = uploadFile(file);
+		if(file != null) {
+			awsUrl = uploadFile(file);
+			URL url = s3Client.getUrl(bucketName, awsUrl);
+			awsUrl = url.toString();
+		}
 		cardDto.setUrl(awsUrl);
 		cardRepository.save(new Card(cardDto));
 		return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -71,6 +78,7 @@ public class CardService {
 	@Transactional
 	public ResponseEntity<String> deleteCard(Long cardId) {
 		Card card = userValidation(cardId);
+		commentRepository.deleteAllByCardsId(cardId);
 		cardRepository.delete(card);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
@@ -94,8 +102,7 @@ public class CardService {
 		String fileName = generateFileName(file);
 		try{
 			s3Client.putObject(bucketName, fileName, file.getInputStream(),getObjectMetadata(file));
-			String defaultUrl = "https://s3.amazonaws.com/";
-			return defaultUrl + fileName;
+			return fileName;
 		} catch (SdkClientException e){
 			throw new IOException("Error uploading file to S3", e);
 		}

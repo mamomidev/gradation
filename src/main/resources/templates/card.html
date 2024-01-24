@@ -17,6 +17,7 @@
                     <button class="tab"><span class="title-1" th:text="${card.columns.board.boardName}">속해있는 보드명</span></button>
                     <button class="tab-2"><span class="title-3" th:text="${card.columns.columnsName}">속해있는 컬럼명</span></button>
                 </div>
+                <img th:src="${card.url}" style="width: 30%; height: 25%;">
             </div>
             <div class="vector"></div>
         </div>

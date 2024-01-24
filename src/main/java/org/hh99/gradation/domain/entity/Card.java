@@ -60,6 +60,7 @@ public class Card {
 		this.cardOrder = cardDto.getCardOrder();
 		this.deadLine = cardDto.getDeadLine();
 		this.worker = cardDto.getWorker();
+		this.url = cardDto.getUrl();
 	}
 
 	public void update(CardDto cardDto) {

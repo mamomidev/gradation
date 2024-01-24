@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.hh99.gradation.domain.entity.Card;
 import org.hh99.gradation.domain.entity.Columns;
 import org.hh99.gradation.domain.entity.User;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CardDto {
