@@ -25,7 +25,7 @@
         <div class="board-column todo" th:each="column, index : ${columns}" data-th-id="${column.id}" th:attrprepend="sort=${index.count}">
             <div class="board-column-header" data-th-id="${column.id}" th:text="${column.columnsName}"/>
             <button name="editButton" onclick="editColumn(this)">수정</button>
-            <button name="deleteButton" onclick="deleteCard(this)">삭제</button>
+            <button name="deleteButton" onclick="deleteColumn(this)">삭제</button>
             <button name="cardAddButton" th:onclick="openAddCardModal([[${column.id}]])">카드</button>
             <div class="board-column-content">
                 <div class="board-item" th:each="card : ${column.cardList}">
