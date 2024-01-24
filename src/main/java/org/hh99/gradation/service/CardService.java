@@ -41,7 +41,7 @@ public class CardService {
 	private String bucketName;
 
 	public List<CardDto> getCards(Long columnsId) {
-		return cardRepository.findAllByColumnsId(columnsId).stream()
+		return cardRepository.findAllByColumnsIdOrderByCardOrder(columnsId).stream()
 			.map(CardDto::new)
 			.collect(Collectors.toList());
 	}

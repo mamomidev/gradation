@@ -49,7 +49,7 @@ public class ColumnsService {
     public List<ColumnsDto> getAllColumnsByBoardId(Long boardId) {
         List<ColumnsDto> columnsDtoList = columnsRepository.findByBoardIdOrderByColumnsOrder(boardId).stream().map(ColumnsDto::new).toList();
         columnsDtoList.forEach(e -> {
-            List<CardDto> cardDtoList = cardRepository.findAllByColumnsId(e.getId()).stream().map(CardDto::new).toList();
+            List<CardDto> cardDtoList = cardRepository.findAllByColumnsIdOrderByCardOrder(e.getId()).stream().map(CardDto::new).toList();
             e.setCardList(cardDtoList);
         });
         return columnsDtoList;
