@@ -1,11 +1,11 @@
 package org.hh99.gradation.service;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
+import com.amazonaws.SdkClientException;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.hh99.gradation.domain.dto.CardDto;
 import org.hh99.gradation.domain.entity.Card;
 import org.hh99.gradation.jwt.JwtUtil;
@@ -19,13 +19,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.amazonaws.SdkClientException;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
+import java.net.URL;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -43,14 +39,8 @@ public class CardService {
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucketName;
 
-	public List<CardDto> getCards(Long columnsId) {
-		return cardRepository.findAllByColumnsIdOrderByCardOrder(columnsId).stream()
-			.map(CardDto::new)
-			.collect(Collectors.toList());
-	}
-
 	public CardDto getCard(Long cardId) {
-		return new CardDto(cardRepository.findById(cardId).orElseThrow(EntityNotFoundException::new));
+		return new CardDto(cardRepository.findByCardId(cardId).orElseThrow(EntityNotFoundException::new));
 	}
 
 	public ResponseEntity<String> createCard(CardDto cardDto, MultipartFile file) throws IOException {

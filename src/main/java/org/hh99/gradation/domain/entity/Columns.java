@@ -24,7 +24,7 @@ public class Columns {
     @Column
     private Integer columnsOrder;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn
     private Board board;
 

@@ -24,11 +24,11 @@ public class Card {
 	@Column
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "users_id", nullable = false)
 	private User users;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "columns_id", nullable = false)
 	private Columns columns;
 

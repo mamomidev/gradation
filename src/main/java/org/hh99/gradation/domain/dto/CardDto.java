@@ -1,20 +1,16 @@
 package org.hh99.gradation.domain.dto;
 
-import java.time.LocalDate;
-
-import org.hh99.gradation.domain.entity.Card;
-import org.hh99.gradation.domain.entity.Columns;
-import org.hh99.gradation.domain.entity.User;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hh99.gradation.domain.entity.Card;
+import org.hh99.gradation.domain.entity.Columns;
+import org.hh99.gradation.domain.entity.User;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
