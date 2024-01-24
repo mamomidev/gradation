@@ -67,6 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         (async () => {
             for (let column of columnList) {
+                console.log(column);
                 if (column.nodeName != "#text") {
                     await orderFetch(column, sort_index);
                     sort_index++;
