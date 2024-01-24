@@ -68,6 +68,13 @@ document.addEventListener('DOMContentLoaded', function () {
                                     id : columnsId
                                 }
                             }),
+                        }).then(() => {
+                            let cardColors = document.getElementsByClassName('card-color')
+                            let cards = document.getElementsByClassName('board-item-content')
+
+                            for(let i = 0; i < cards.length; i++) {
+                                cards[i].style.backgroundColor = cardColors[i].value
+                            }
                         })
                             .catch(error => {
                                 console.error('Error:', error);
