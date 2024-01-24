@@ -24,8 +24,8 @@
     <div class="board">
         <div class="board-column todo" th:each="column, index : ${columns}" data-th-id="${column.id}" th:attrprepend="sort=${index.count}">
             <div class="board-column-header" data-th-id="${column.id}" th:text="${column.columnsName}"/>
-            <button name="editButton" onclick="editColumn(this)">수정</button>
-            <button name="deleteButton" onclick="deleteColumn(this)">삭제</button>
+            <button name="editButton" onclick="openModifyCardModal(this)">수정</button>
+            <button name="deleteButton" onclick="deleteCard(this)">삭제</button>
             <button name="cardAddButton" th:onclick="openAddCardModal([[${column.id}]])">카드</button>
             <div class="board-column-content">
                 <div class="board-item" th:each="card : ${column.cardList}">
@@ -76,6 +76,7 @@
         <span class="close" onclick="closeModifyCardModal()">&times;</span>
         <h2>카드 수정</h2>
         <form id="modifyCardForm">
+            <input type="hidden" id="id" name="columnId" disabled>
             <label for="cardName">카드 이름:</label>
             <input type="text" id="modifyCardName" name="cardName" required>
 
@@ -89,14 +90,14 @@
             <input type="file" id="modifyFile" name="file">
 
             <label for="deadline">마감일:</label>
-            <input type="date" id="modifyDeadline" name="deadline">
+            <input type="date" id="modifyDeadline" name="deadLine">
 
             <label for="worker">작업자:</label>
             <input type="text" id="modifyWorker" name="worker">
 
             <input type="hidden" id="modifyCardId">
 
-            <button type="button" onclick="cardModify()">카드 수정</button>
+            <button type="button" th:onclick="modifyCard()">카드 수정</button>
         </form>
     </div>
 </div>
@@ -354,6 +355,9 @@
         });
     }
 
+    function modifyCard(cardId){
+
+    }
     function deleteCard(cardId){
         const confirmDelete = confirm('카드 삭제하시겠습니까?');
         if (confirmDelete) {
