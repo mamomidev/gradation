@@ -591,3 +591,15 @@ input[type="color"] {
 .muuri-item {
     margin-bottom: 20px;
 }
+
+.card-btn {
+    position: absolute;
+    right: 10px;
+    border: 1px solid #3e3e3e;
+}
+button[name="editButton"] {
+    top: 5px;
+}
+button[name="deleteButton"] {
+    top: 36px;
+}
