@@ -28,6 +28,7 @@ public class CardDto {
     private User users;
 
     @NotNull(message = "컬럼을 선택해주세요.")
+    @JsonIgnore
     private Columns columns;
 
     @NotEmpty(message = "카드명을 입력해주세요.")
