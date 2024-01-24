@@ -33,7 +33,11 @@
 
             <div class="board-column-content">
                 <div class="board-item card-info" th:each="card : ${column.cardList}">
-                    <div class="board-item-content card-info" th:text="${card.cardName}" data-th-id="${card.id}">카드이름</div>
+                    <div class="board-item-content card-info" data-th-id="${card.id}">
+                        [[${card.cardName}]]
+                        <button class="card-btn" name="editButton" onclick="editColumn(this)">수정</button>
+                        <button class="card-btn" name="deleteButton" onclick="deleteColumn(this)">삭제</button>
+                    </div>
                 </div>
             </div>
         </div>
