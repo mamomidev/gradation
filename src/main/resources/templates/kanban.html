@@ -29,7 +29,7 @@
             <button name="cardAddButton" th:onclick="openAddCardModal([[${column.id}]])">카드</button>
             <div class="board-column-content">
                 <div class="board-item" th:each="card : ${column.cardList}">
-                    <div class="board-item-content">
+                    <div class="board-item-content" data-th-id="${card.id}">
                         <span class="card-info" data-th-id="${card.id}">[[${card.cardName}]]</span>
                         <button class="card-btn" th:onclick="openModifyCardModal([[${card.id}]])">수정</button>
                         <button class="card-btn" th:onclick="deleteCard([[${card.id}]])">삭제</button>
@@ -337,9 +337,6 @@
         .catch(error => {
             console.error('Error:', error);
         });
-        // modal 넣어 주고
-
-        // 가져와야하는
     }
 
     function deleteCard(cardId){

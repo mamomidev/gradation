@@ -85,7 +85,7 @@ public class CardService {
 
 	@Transactional
 	public ResponseEntity<String> moveCard(Long cardId, CardDto cardDto) {
-		Card card = userValidation(cardId);
+		Card card = cardRepository.findById(cardId).orElseThrow(() -> new EntityNotFoundException("없는 카드 입니다."));
 		card.move(cardDto);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
