@@ -78,6 +78,7 @@
     padding: 20px;
     background: #fff;
     border-radius: 4px;
+    height: 70px;
     font-size: 17px;
     cursor: pointer;
     -webkit-box-shadow: 0px 1px 3px 0 rgba(0,0,0,0.2);
@@ -602,4 +603,18 @@ input[type="color"] {
 }
 .deleteButton {
     top: 36px;
+}
+.card-info {
+    font-size: 18px;
+    font-weight: 500;
+    color: #000;
+    line-height: 30px;
+    display: inline-block;
+    white-space: nowrap;       /* 텍스트를 한 줄로 표시 */
+    overflow: hidden;          /* 컨테이너 영역을 넘어가는 부분은 숨김 */
+    text-overflow: ellipsis;   /* 초과된 텍스트는 '...'으로 표시 */
+    max-width: 180px;
+}
+.card-info:hover{
+    font-weight: 600;
 }
