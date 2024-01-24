@@ -597,9 +597,9 @@ input[type="color"] {
     right: 10px;
     border: 1px solid #3e3e3e;
 }
-button[name="editButton"] {
+.editButton {
     top: 5px;
 }
-button[name="deleteButton"] {
+.deleteButton {
     top: 36px;
 }

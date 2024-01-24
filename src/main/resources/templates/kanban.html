@@ -31,8 +31,8 @@
                 <div class="board-item" th:each="card : ${column.cardList}">
                     <div class="board-item-content" data-th-id="${card.id}">
                         <span class="card-info" data-th-id="${card.id}">[[${card.cardName}]]</span>
-                        <button class="card-btn" th:onclick="openModifyCardModal([[${card.id}]])">수정</button>
-                        <button class="card-btn" th:onclick="deleteCard([[${card.id}]])">삭제</button>
+                        <button class="card-btn editButton" th:onclick="openModifyCardModal([[${card.id}]])">수정</button>
+                        <button class="card-btn deleteButton" th:onclick="deleteCard([[${card.id}]])">삭제</button>
                     </div>
                 </div>
             </div>
