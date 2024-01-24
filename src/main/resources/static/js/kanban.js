@@ -74,9 +74,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             });
                     }
                 }
-
-
-
             })
             .on('layoutStart', function () {
                 boardGrid.refreshItems().layout();
