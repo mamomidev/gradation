@@ -505,6 +505,7 @@ section h4 {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     z-index: 30;
+    overflow-y: auto;
 }
 
 .modal-content {

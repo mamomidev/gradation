@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import org.hh99.gradation.domain.dto.CardDto;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -46,6 +48,7 @@ public class Card {
 	private LocalDate deadLine;
 
 	@Column
+	@Setter
 	private String url;
 
 	@Column
@@ -67,6 +70,7 @@ public class Card {
 		this.cardName = cardDto.getCardName();
 		this.cardDescription = cardDto.getCardDescription();
 		this.cardColor = cardDto.getCardColor();
+		this.deadLine = cardDto.getDeadLine();
 		this.worker = cardDto.getWorker();
 	}
 

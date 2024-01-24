@@ -69,8 +69,14 @@ public class CardService {
 	}
 
 	@Transactional
-	public ResponseEntity<CardDto> updateCard(Long cardId, CardDto cardDto) {
+	public ResponseEntity<CardDto> updateCard(Long cardId, CardDto cardDto, MultipartFile file) throws IOException {
 		Card card = userValidation(cardId);
+		if(file != null){
+			String awsUrl = uploadFile(file);
+			URL url = s3Client.getUrl(bucketName, awsUrl);
+			awsUrl = url.toString();
+			card.setUrl(awsUrl);
+		}
 		card.update(cardDto);
 		return ResponseEntity.status(HttpStatus.OK).body(new CardDto(card));
 	}

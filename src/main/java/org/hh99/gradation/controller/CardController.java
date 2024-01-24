@@ -57,8 +57,9 @@ public class CardController {
 
 	@PatchMapping("/api/cards/{cardId}")
 	@ResponseBody
-	public void updateCard(@PathVariable Long cardId, @RequestBody CardDto cardDto) {
-		cardService.updateCard(cardId, cardDto);
+	public void updateCard(@PathVariable Long cardId, @ModelAttribute CardDto cardDto, @RequestPart(value = "file", required = false) MultipartFile file) throws
+	IOException {
+		cardService.updateCard(cardId, cardDto, file);
 	}
 
 	@DeleteMapping("/api/cards/{cardId}")

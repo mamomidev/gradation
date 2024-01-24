@@ -76,7 +76,6 @@
         <span class="close" onclick="closeModifyCardModal()">&times;</span>
         <h2>카드 수정</h2>
         <form id="modifyCardForm">
-            <input type="hidden" id="id" name="columnId" disabled>
             <label for="cardName">카드 이름:</label>
             <input type="text" id="modifyCardName" name="cardName" required>
 
@@ -86,7 +85,8 @@
             <label for="cardColor">카드 색상:</label>
             <input type="color" id="modifyCardColor" name="cardColor">
 
-            <label for="file">이미지:</label>
+            <label for="file">이미지:</label><br/>
+            <img id="modifyImg">
             <input type="file" id="modifyFile" name="file">
 
             <label for="deadline">마감일:</label>
@@ -96,7 +96,7 @@
             <input type="text" id="modifyWorker" name="worker">
 
             <input type="hidden" id="modifyCardId">
-
+            <input type="hidden" id="modifyCardOrder">
             <button type="button" th:onclick="modifyCard()">카드 수정</button>
         </form>
     </div>
@@ -125,7 +125,6 @@
         cardData.append("columns", document.getElementById('addCardColumn').value);
         cardData.append("cardOrder", "99");
         cardData.append("file", document.getElementById('file').files[0]);
-        console.log(cardData);
 
         fetch('/api/cards', {
             method: 'POST',
@@ -324,12 +323,12 @@
         });
     });
 
-    const modfiyCardModal = document.getElementById('modifyCardModal');
+    const modifyCardModal = document.getElementById('modifyCardModal');
     const modifyCardForm = document.getElementById('modifyCardForm');
 
     function closeModifyCardModal() {
         modifyCardForm.reset();
-        modfiyCardModal.style.display = 'none';
+        modifyCardModal.style.display = 'none';
     }
 
     function openModifyCardModal(cardId){
@@ -342,21 +341,45 @@
                 throw new Error(`HTTP error! Status: ${response.status}`)
             }
             let json = await response.json();
+            cardId = document.querySelector("#modifyCardId").value
             document.querySelector("#modifyCardName").value = json.cardName;
             document.querySelector("#modifyCardDescription").value = json.cardDescription;
             document.querySelector("#modifyCardColor").value = json.cardColor;
-            document.querySelector("#modifyDeadline").value = json.deadline;
+            document.querySelector("#modifyDeadline").value = json.deadLine;
             document.querySelector("#modifyWorker").value = json.worker;
-            document.querySelector("#modifyCardId").value = cardId;
-            modfiyCardModal.style.display = 'block';
+            document.querySelector("#modifyCardId").value = json.id;
+            document.querySelector("#modifyCardOrder").value = json.cardOrder;
+            document.querySelector("#modifyImg").src = json.url;
+            modifyCardModal.style.display = 'block';
         })
         .catch(error => {
             console.error('Error:', error);
         });
     }
 
-    function modifyCard(cardId){
+    function modifyCard(){
+        let cardData = new FormData();
+        let cardId = document.getElementById("modifyCardId").value;
+        console.log(cardId)
+        cardData.append("cardName", document.getElementById('modifyCardName').value);
+        cardData.append("cardDescription", document.getElementById('modifyCardDescription').value);
+        cardData.append("cardColor", document.getElementById('modifyCardColor').value);
+        cardData.append("deadLine", document.getElementById('modifyDeadline').value);
+        cardData.append("worker", document.getElementById('modifyWorker').value);
+        cardData.append("cardOrder", document.getElementById('modifyCardOrder').value);
+        cardData.append("file", document.getElementById('modifyFile').files[0]);
 
+        fetch('/api/cards/' + cardId , {
+            method: 'PATCH',
+            body: cardData,
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                closeModifyCardModal()
+                location.reload()
+            })
     }
     function deleteCard(cardId){
         const confirmDelete = confirm('카드 삭제하시겠습니까?');
