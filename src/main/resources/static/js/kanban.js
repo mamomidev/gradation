@@ -39,6 +39,44 @@ document.addEventListener('DOMContentLoaded', function () {
                 columnGrids.forEach(function (muuri) {
                     muuri.refreshItems();
                 });
+
+                muuri.synchronize();
+                let sort_index = 1;
+                const cardlist = item._element.parentNode.childNodes;
+
+                (async () => {
+                    for (let card of cardlist) {
+                        if (card.nodeName != "#text") {
+                            await orderFetch(card, sort_index);
+                            sort_index++;
+                        }
+                    }
+                })();
+
+                function orderFetch(card, sort_index) {
+                    if(card.nodeName != "#text") {
+                        const columnsId = card.parentNode.parentNode.getAttribute("id")
+                        const cardId = card.firstChild.nextSibling.getAttribute("id")
+                        fetch('/api/cards/' + cardId + "/move", {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                "cardOrder":sort_index,
+                                "columns" : {
+                                    id : columnsId
+                                }
+                            }),
+                        })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    }
+                }
+
+
+
             })
             .on('layoutStart', function () {
                 boardGrid.refreshItems().layout();
