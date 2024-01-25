@@ -140,14 +140,30 @@
 
     function cardAdd(){
         let cardData = new FormData();
-        cardData.append("cardName", document.getElementById('cardName').value);
-        cardData.append("cardDescription", document.getElementById('cardDescription').value);
-        cardData.append("cardColor", document.getElementById('cardColor').value);
-        cardData.append("deadLine", document.getElementById('deadline').value);
-        cardData.append("worker", document.getElementById('worker').value);
+        const cardName = document.getElementById('cardName').value;
+        const cardDescription = document.getElementById('cardDescription').value;
+        const cardColor = document.getElementById('cardColor').value;
+        const deadLine = document.getElementById('deadline').value;
+        const worker = document.getElementById('worker').value;
+        const file = document.getElementById('modifyFile').files[0];
+
+        if (cardName === "") {
+            alert("카드 이름을 작성해주세요.");
+            return;
+        }
+        if (cardDescription === "") {
+            alert("카드 설명을 작성해주세요.");
+            return;
+        }
+
+        cardData.append("cardName", cardName);
+        cardData.append("cardDescription", cardDescription);
+        cardData.append("cardColor", cardColor);
+        cardData.append("deadLine", deadLine);
+        cardData.append("worker", worker);
         cardData.append("columns", document.getElementById('addCardColumn').value);
         cardData.append("cardOrder", "99");
-        cardData.append("file", document.getElementById('file').files[0]);
+        cardData.append("file", file);
 
         fetch('/api/cards', {
             method: 'POST',
@@ -340,7 +356,7 @@
     [].forEach.call(cardInfoList, (el) => {
         el.addEventListener("click", (el) => {
             const url = "/cards/"+el.target.getAttribute("id");
-            const name = "popup test";
+            const name = "Gradation";
             const option = "width = 1440, height = 765, top = 100, left = 200, location = no"
             window.open(url, name, option);
         });
@@ -382,15 +398,31 @@
 
     function modifyCard(){
         let cardData = new FormData();
-        let cardId = document.getElementById("modifyCardId").value;
-        console.log(cardId)
-        cardData.append("cardName", document.getElementById('modifyCardName').value);
-        cardData.append("cardDescription", document.getElementById('modifyCardDescription').value);
-        cardData.append("cardColor", document.getElementById('modifyCardColor').value);
-        cardData.append("deadLine", document.getElementById('modifyDeadline').value);
-        cardData.append("worker", document.getElementById('modifyWorker').value);
-        cardData.append("cardOrder", document.getElementById('modifyCardOrder').value);
-        cardData.append("file", document.getElementById('modifyFile').files[0]);
+        const cardId = document.getElementById("modifyCardId").value;
+        const cardName = document.getElementById('modifyCardName').value;
+        const cardDescription = document.getElementById('modifyCardDescription').value;
+        const cardColor = document.getElementById('modifyCardColor').value;
+        const deadLine = document.getElementById('modifyDeadline').value;
+        const worker = document.getElementById('modifyWorker').value;
+        const cardOrder = document.getElementById('modifyWorker').value;
+        const file = document.getElementById('modifyFile').files[0];
+
+        if (cardName === "") {
+            alert("카드 이름을 작성해주세요.");
+            return;
+        }
+        if (cardDescription === "") {
+            alert("카드 설명을 작성해주세요.");
+            return;
+        }
+
+        cardData.append("cardName", cardName);
+        cardData.append("cardDescription", cardDescription);
+        cardData.append("cardColor", cardColor);
+        cardData.append("deadLine", deadLine);
+        cardData.append("worker", worker);
+        cardData.append("cardOrder", cardOrder);
+        cardData.append("file", file);
 
         fetch('/api/cards/' + cardId , {
             method: 'PATCH',
@@ -404,6 +436,7 @@
                 location.reload()
             })
     }
+
     function deleteCard(cardId){
         const confirmDelete = confirm('카드 삭제하시겠습니까?');
         if (confirmDelete) {
