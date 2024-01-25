@@ -84,6 +84,12 @@
 <script>
     document.querySelector("#createCommentBtn").addEventListener("click", async () => {
         const contents = document.querySelector("#createCommentContents").value;
+
+        if (contents === ""){
+            alert("댓글 내용을 작성해주세요.");
+            return;
+        }
+
         const data = {
             "card":{
                 "id":[[${card.id}]]
@@ -140,13 +146,20 @@
             $(el.currentTarget).parent().children(".updateCommentBtn").unbind("click")
             $(el.currentTarget).parent().children(".updateCommentBtn").html(`등록`);
             $(el.currentTarget).parent().children(".updateCommentBtn").bind("click", (el) => {
+                const modifyComment = $(el.currentTarget).parent().parent().children(".contents").children().val();
+                if (modifyComment === ""){
+                    alert("댓글 내용을 작성해주세요.");
+                    return;
+                }
+
                 fetch("/api/user/cards/comments/" + el.target.getAttribute("data"), {
+
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        "contents":$(el.currentTarget).parent().parent().children(".contents").children().val()
+                        "contents":modifyComment
                     }),
                 }).then((res) => {
                     if (res.status !== 200) {
