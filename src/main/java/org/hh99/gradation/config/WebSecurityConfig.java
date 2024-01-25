@@ -58,12 +58,9 @@ public class WebSecurityConfig {
                 authorizeHttpRequests
                     .requestMatchers("/static/**").permitAll()
                     .requestMatchers("/api/login").permitAll()
-                    .requestMatchers("/api/join").permitAll()
+                    .requestMatchers("/api/signup").permitAll()
                     .requestMatchers("/health").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/goods/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/goods").hasAnyAuthority("AUTH_ADMIN")
-                    .requestMatchers(HttpMethod.POST, "/api/upload").hasAnyAuthority("AUTH_ADMIN")
-                    .requestMatchers("/api/carts/**").hasAnyAuthority("AUTH_USER")
                     .anyRequest().permitAll()
         );
 

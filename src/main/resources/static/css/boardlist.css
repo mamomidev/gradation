@@ -711,7 +711,6 @@ button {
     align-self: stretch;
     flex-shrink: 0;
     position: relative;
-    width: 120px;
     min-height: 0;
     color: #000000;
     font-family: Roboto, var(--default-font-family);
@@ -888,4 +887,92 @@ button {
 }
 #logout:hover{
     color: #73c991;
+}
+/* 생성 및 수정 모달 스타일 */
+#boardModal,
+#editBoardModal {
+    /* 기본 모달 스타일 */
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+#boardModal .modal-content,
+#editBoardModal .modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    max-width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 추가된 부분: 모달 나타낼 때 애니메이션 효과 */
+#boardModal.show,
+#editBoardModal.show {
+    display: flex;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+
+/* 추가된 부분: 모달 내의 폼 스타일 */
+#boardModal form,
+#editBoardModal form {
+    margin-top: 20px;
+}
+
+#boardModal label,
+#editBoardModal label {
+    display: block;
+    margin-bottom: 6px;
+}
+
+#boardModal input,
+#editBoardModal input,
+#boardModal textarea,
+#editBoardModal textarea,
+#boardModal button,
+#editBoardModal button {
+    margin-bottom: 12px;
+}
+
+#boardModal input,
+#editBoardModal input,
+#boardModal textarea,
+#editBoardModal textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+#boardModal button,
+#editBoardModal button {
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+input[type=color] {
+    height: 50px;
 }

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Gradation</title>
 
     <link href="/css/kanban.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="/css/boardlist.css"/>
@@ -89,7 +89,7 @@
 
             <input type="hidden" id="addCardColumn">
 
-            <button type="button" onclick="cardAdd()">카드 추가</button>
+            <button type="button" onclick="cardAdd()" style="margin:0; margin-top:20px;">카드 추가</button>
         </form>
     </div>
 </div>
@@ -120,7 +120,7 @@
 
             <input type="hidden" id="modifyCardId">
             <input type="hidden" id="modifyCardOrder">
-            <button type="button" th:onclick="modifyCard()">카드 수정</button>
+            <button type="button" th:onclick="modifyCard()" style="margin:0; ; margin-top:20px;">카드 수정</button>
         </form>
     </div>
 </div>

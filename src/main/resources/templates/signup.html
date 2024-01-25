@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome Trello</title>
+    <title>Gradation</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
     <link rel="stylesheet" type="text/css" href="/css/signup.css" />
 </head>
@@ -81,8 +81,12 @@
             body: JSON.stringify(loginData) // 데이터를 JSON 문자열로 변환하여 전송
         })
             .then(data => {
-                alert("회원가입 되었습니다.")
-                location.href = "/";
+                if(data.status === 200){
+                    alert("회원가입 되었습니다.");
+                    location.href = "/";
+                    return;
+                }
+                alert("회원가입에 실패하였습니다.");
             })
             .catch(error => {
                 // 오류 처리

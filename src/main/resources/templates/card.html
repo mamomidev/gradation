@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>트렐로 카드 상세정보</title>
+    <title>Gradation</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
     <link rel="stylesheet" href="/css/card.css" />
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
@@ -17,7 +17,9 @@
                     <button class="tab"><span class="title-1" th:text="${card.columns.board.boardName}">속해있는 보드명</span></button>
                     <button class="tab-2"><span class="title-3" th:text="${card.columns.columnsName}">속해있는 컬럼명</span></button>
                 </div>
-                <img th:src="${card.url}" style="width: 30%; height: 25%;">
+                <th:block th:if='${not #strings.isEmpty(card.url)}'>
+                    <img th:src="${card.url}" style="width: 30%; height: 25%;">
+                </th:block>
             </div>
             <div class="vector"></div>
         </div>
