@@ -16,32 +16,34 @@ public class ColumnsController {
 
     private final ColumnsService columnsService;
 
-    @GetMapping("/board/{boardId}/columns")
+    @GetMapping("/boards/{boardId}/columns")
     public String getAllColumnsByBoardId(@PathVariable Long boardId, Model model) {
-
         List<ColumnsDto> columnsDtoList = columnsService.getAllColumnsByBoardId(boardId);
         model.addAttribute("columns", columnsDtoList);
-
+        model.addAttribute("boardId", boardId);
         return "kanban";
     }
 
-    @PostMapping("/board/{boardId}/columns")
+    @PostMapping("/boards/{boardId}/columns")
     public String createColumns(@PathVariable Long boardId, @RequestBody ColumnsDto columnsDto) {
         columnsService.createColumns(boardId, columnsDto);
         return "columns";
     }
 
-    @PatchMapping("/columns/{columnsId}")
-    public void modifyColumns(@PathVariable Long columnsId, @RequestBody ColumnsDto columnsDto) {
+    @PatchMapping("/boards/{boardId}/columns/{columnsId}")
+    @ResponseBody
+    public void modifyColumns(@PathVariable Long boardId, @PathVariable Long columnsId, @RequestBody ColumnsDto columnsDto) {
         columnsService.modifyColumns(columnsId, columnsDto);
     }
 
     @PatchMapping("/columns/{columnsId}/order")
+    @ResponseBody
     public void modifyColumnsOrder(@PathVariable Long columnsId, @RequestBody ColumnsDto columnsDto) {
         columnsService.modifyColumnsOrder(columnsId, columnsDto);
     }
 
-    @DeleteMapping("/columns/{columnsId}")
+    @DeleteMapping("/boards/columns/{columnsId}")
+    @ResponseBody
     public void deleteColumns(@PathVariable Long columnsId) {
         columnsService.deleteColumns(columnsId);
     }

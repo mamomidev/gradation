@@ -260,9 +260,9 @@ button {
     flex-shrink: 0;
     gap: 12px;
     position: relative;
-    width: 332px;
     z-index: 15;
     overflow: hidden;
+    justify-content: center;
 }
 .wrapper-2 {
     display: flex;
@@ -282,7 +282,7 @@ button {
     flex-shrink: 0;
     flex-basis: auto;
     position: relative;
-    height: 24px;
+    height: 35px;
     color: #000000;
     font-family: Roboto, var(--default-font-family);
     font-size: 16px;
@@ -310,7 +310,7 @@ button {
     flex-shrink: 0;
     flex-basis: auto;
     position: relative;
-    height: 24px;
+    height: 35px;
     color: #ffffff;
     font-family: Roboto, var(--default-font-family);
     font-size: 16px;

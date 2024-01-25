@@ -39,13 +39,53 @@ document.addEventListener('DOMContentLoaded', function () {
                 columnGrids.forEach(function (muuri) {
                     muuri.refreshItems();
                 });
+
+                muuri.synchronize();
+                let sort_index = 1;
+                const cardlist = item._element.parentNode.childNodes;
+
+                (async () => {
+                    for (let card of cardlist) {
+                        if (card.nodeName != "#text") {
+                            await orderFetch(card, sort_index);
+                            sort_index++;
+                        }
+                    }
+                })();
+
+                function orderFetch(card, sort_index) {
+                    if(card.nodeName != "#text") {
+                        const columnsId = card.parentNode.parentNode.getAttribute("id")
+                        const cardId = card.firstChild.nextSibling.getAttribute("id")
+                        fetch('/api/cards/' + cardId + "/move", {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                "cardOrder":sort_index,
+                                "columns" : {
+                                    id : columnsId
+                                }
+                            }),
+                        }).then(() => {
+                            let cardColors = document.getElementsByClassName('card-color')
+                            let cards = document.getElementsByClassName('board-item-content')
+
+                            for(let i = 0; i < cards.length; i++) {
+                                cards[i].style.backgroundColor = cardColors[i].value
+                            }
+                        })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    }
+                }
             })
             .on('layoutStart', function () {
                 boardGrid.refreshItems().layout();
             });
-
         columnGrids.push(muuri);
-
     });
 
     boardGrid = new Muuri(board, {
@@ -60,4 +100,40 @@ document.addEventListener('DOMContentLoaded', function () {
         dragReleaseEasing: 'ease'
     });
 
+    boardGrid.on('dragReleaseEnd', function (item) {
+        boardGrid.synchronize();
+        // 순서 바뀔시에 순서 저장
+
+        let sort_index = 1;
+        const columnList = document.querySelector(".board.muuri").childNodes;
+
+        (async () => {
+            for (let column of columnList) {
+                console.log(column);
+                if (column.nodeName != "#text") {
+                    await orderFetch(column, sort_index);
+                    sort_index++;
+                }
+            }
+        })();
+
+        function orderFetch(el, sort_index) {
+            if(el.nodeName != "#text") {
+                const columnId = el.getAttribute('id');
+                fetch('/api/user/columns/' + columnId + "/order", {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "columnsOrder":sort_index
+                    }),
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+
+    })
 });

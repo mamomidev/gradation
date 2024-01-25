@@ -26,6 +26,9 @@ button {
     height: 1316px;
     margin: 0 auto;
     background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .section {
     display: flex;
@@ -108,6 +111,7 @@ button {
     border: 1px solid rgba(0, 0, 0, 0.1);
     z-index: 5;
     border-radius: 6px;
+    height: 150px;
 }
 .image-container {
     display: flex;
@@ -141,6 +145,7 @@ button {
     gap: 8px;
     position: relative;
     z-index: 8;
+    cursor: pointer;
 }
 .title-1 {
     align-self: stretch;
@@ -592,7 +597,7 @@ button {
     left: 0;
     padding: 20px 20px 20px 20px;
     background: #ffffff;
-    z-index: 42;
+    z-index: 0;
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.12);
 }
 .trello {
@@ -681,10 +686,8 @@ button {
     justify-content: center;
     flex-wrap: nowrap;
     gap: 60px;
-    position: absolute;
     width: 1440px;
     height: 220px;
-    top: 1096px;
     left: 0;
     padding: 60px 60px 60px 60px;
     z-index: 49;
@@ -819,4 +822,70 @@ button {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+.btn{
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.custom-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 500px;
+    height: 700px;
+}
+#emailSearch {
+    width: 300px;
+    font-size: 14px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    border: none;
+    border-bottom: 1px solid #888;
+}
+.invite-btn{
+    padding: 5px 10px;
+    border: 1px solid #000;
+    border-radius: 3px;
+    background-color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+#userInviteList > li{
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
+    height: 30px;
+}
+.invite-delete-btn{
+    line-height: 0;
+    padding: 10px 6px;
+    border: 1px solid #000;
+    border-radius: 3px;
+    background-color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+#logout{
+    cursor:pointer;
+}
+#logout:hover{
+    color: #73c991;
 }

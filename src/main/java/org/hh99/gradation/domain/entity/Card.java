@@ -1,22 +1,15 @@
 package org.hh99.gradation.domain.entity;
 
-import java.time.LocalDate;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import org.hh99.gradation.domain.dto.CardDto;
 import org.hibernate.annotations.DynamicUpdate;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hh99.gradation.domain.dto.CardDto;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -31,11 +24,11 @@ public class Card {
 	@Column
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "users_id", nullable = false)
 	private User users;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "columns_id", nullable = false)
 	private Columns columns;
 
@@ -55,6 +48,7 @@ public class Card {
 	private LocalDate deadLine;
 
 	@Column
+	@Setter
 	private String url;
 
 	@Column
@@ -69,12 +63,14 @@ public class Card {
 		this.cardOrder = cardDto.getCardOrder();
 		this.deadLine = cardDto.getDeadLine();
 		this.worker = cardDto.getWorker();
+		this.url = cardDto.getUrl();
 	}
 
 	public void update(CardDto cardDto) {
 		this.cardName = cardDto.getCardName();
 		this.cardDescription = cardDto.getCardDescription();
 		this.cardColor = cardDto.getCardColor();
+		this.deadLine = cardDto.getDeadLine();
 		this.worker = cardDto.getWorker();
 	}
 

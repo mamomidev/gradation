@@ -18,7 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CommentDto {
 	private Long id;
-	@JsonIgnore
+
 	private Card card;
 	@Setter
 	private User user;

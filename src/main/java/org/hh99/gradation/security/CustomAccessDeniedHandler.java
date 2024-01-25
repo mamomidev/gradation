@@ -3,6 +3,7 @@ package org.hh99.gradation.security;
 import java.io.IOException;
 
 import org.hh99.gradation.message.ErrorMessage;
+import org.hh99.gradation.message.JwtErrorMessage;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        response.getWriter().write(ErrorMessage.AUTH_EXCEPTION_MESSAGE.getErrorMessage());
+        response.getWriter().write(JwtErrorMessage.AUTH_EXCEPTION_MESSAGE.getErrorMessage());
     }
 }
