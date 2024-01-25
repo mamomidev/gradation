@@ -117,11 +117,11 @@ html.dragging body {
 }
 body {
     position: relative;
-    font-family: 'Fira Sans', Helvetica, Arial, sans-serif;
-    font-size: 18px;
+    /*font-family: 'Fira Sans', Helvetica, Arial, sans-serif;*/
+    /*font-size: 18px;*/
     line-height: 1.5;
     margin: 0 20px;
-    color: #6e6e6e;
+    /*color: #6e6e6e;*/
 }
 a {
     color: #3396FF;
